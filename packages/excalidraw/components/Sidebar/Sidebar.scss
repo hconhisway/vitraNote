@@ -3,7 +3,7 @@
 
 .excalidraw {
   .sidebar {
-    display: flex;
+    display: none;
     flex-direction: column;
     position: absolute;
     top: 0;
@@ -124,11 +124,13 @@
   }
 
   .sidebar-tabs-root > .sidebar__header {
+    display: none;
     padding-top: 0;
     padding-bottom: 1rem;
   }
 
   .sidebar-tab-trigger {
+    display: none;
     --button-width: auto;
     --button-bg: transparent;
     --button-hover-bg: transparent;
@@ -148,13 +150,13 @@
   // ---------------------------- default sidebar ------------------------------
 
   .default-sidebar {
-    display: flex;
+    display: none;
     flex-direction: column;
 
     .sidebar-triggers {
       $padding: 2px;
       $border: 1px;
-      display: flex;
+      display: none;
       gap: 0;
       padding: $padding;
       // offset by padding + border to vertically center the list with sibling
@@ -168,7 +170,7 @@
       .sidebar-tab-trigger {
         height: var(--lg-button-size);
         width: var(--lg-button-size);
-
+        display: none;
         border: none;
       }
     }

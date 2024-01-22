@@ -13,13 +13,13 @@ import {
 import { KEYS } from "./keys";
 
 export const SHAPES = [
-  {
-    icon: SelectionIcon,
-    value: "selection",
-    key: KEYS.V,
-    numericKey: KEYS["1"],
-    fillable: true,
-  },
+  // {
+  //   icon: SelectionIcon,
+  //   value: "selection",
+  //   key: KEYS.V,
+  //   numericKey: KEYS["1"],
+  //   fillable: true,
+  // },
   {
     icon: RectangleIcon,
     value: "rectangle",
@@ -27,20 +27,20 @@ export const SHAPES = [
     numericKey: KEYS["2"],
     fillable: true,
   },
-  {
-    icon: DiamondIcon,
-    value: "diamond",
-    key: KEYS.D,
-    numericKey: KEYS["3"],
-    fillable: true,
-  },
-  {
-    icon: EllipseIcon,
-    value: "ellipse",
-    key: KEYS.O,
-    numericKey: KEYS["4"],
-    fillable: true,
-  },
+  // {
+  //   icon: DiamondIcon,
+  //   value: "diamond",
+  //   key: KEYS.D,
+  //   numericKey: KEYS["3"],
+  //   fillable: true,
+  // },
+  // {
+  //   icon: EllipseIcon,
+  //   value: "ellipse",
+  //   key: KEYS.O,
+  //   numericKey: KEYS["4"],
+  //   fillable: true,
+  // },
   {
     icon: ArrowIcon,
     value: "arrow",
@@ -48,13 +48,13 @@ export const SHAPES = [
     numericKey: KEYS["5"],
     fillable: true,
   },
-  {
-    icon: LineIcon,
-    value: "line",
-    key: KEYS.L,
-    numericKey: KEYS["6"],
-    fillable: true,
-  },
+  // {
+  //   icon: LineIcon,
+  //   value: "line",
+  //   key: KEYS.L,
+  //   numericKey: KEYS["6"],
+  //   fillable: true,
+  // },
   {
     icon: FreedrawIcon,
     value: "freedraw",
@@ -62,20 +62,20 @@ export const SHAPES = [
     numericKey: KEYS["7"],
     fillable: false,
   },
-  {
-    icon: TextIcon,
-    value: "text",
-    key: KEYS.T,
-    numericKey: KEYS["8"],
-    fillable: false,
-  },
-  {
-    icon: ImageIcon,
-    value: "image",
-    key: null,
-    numericKey: KEYS["9"],
-    fillable: false,
-  },
+  // {
+  //   icon: TextIcon,
+  //   value: "text",
+  //   key: KEYS.T,
+  //   numericKey: KEYS["8"],
+  //   fillable: false,
+  // },
+  // {
+  //   icon: ImageIcon,
+  //   value: "image",
+  //   key: null,
+  //   numericKey: KEYS["9"],
+  //   fillable: false,
+  // },
   {
     icon: EraserIcon,
     value: "eraser",

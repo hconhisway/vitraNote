@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import ExcalidrawApp from "./App";
+import VitraNoteApp from "./vitraNoteApp";
 import { registerSW } from "virtual:pwa-register";
 
 import "../excalidraw-app/sentry";
@@ -10,6 +10,6 @@ const root = createRoot(rootElement);
 registerSW();
 root.render(
   <StrictMode>
-    <ExcalidrawApp />
+    <VitraNoteApp />
   </StrictMode>,
 );

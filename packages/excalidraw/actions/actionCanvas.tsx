@@ -93,81 +93,81 @@ export const actionClearCanvas = register({
   },
 });
 
-export const actionZoomIn = register({
-  name: "zoomIn",
-  viewMode: true,
-  trackEvent: { category: "canvas" },
-  perform: (_elements, appState, _, app) => {
-    return {
-      appState: {
-        ...appState,
-        ...getStateForZoom(
-          {
-            viewportX: appState.width / 2 + appState.offsetLeft,
-            viewportY: appState.height / 2 + appState.offsetTop,
-            nextZoom: getNormalizedZoom(appState.zoom.value + ZOOM_STEP),
-          },
-          appState,
-        ),
-        userToFollow: null,
-      },
-      commitToHistory: false,
-    };
-  },
-  PanelComponent: ({ updateData }) => (
-    <ToolButton
-      type="button"
-      className="zoom-in-button zoom-button"
-      icon={ZoomInIcon}
-      title={`${t("buttons.zoomIn")} — ${getShortcutKey("CtrlOrCmd++")}`}
-      aria-label={t("buttons.zoomIn")}
-      onClick={() => {
-        updateData(null);
-      }}
-    />
-  ),
-  keyTest: (event) =>
-    (event.code === CODES.EQUAL || event.code === CODES.NUM_ADD) &&
-    (event[KEYS.CTRL_OR_CMD] || event.shiftKey),
-});
+// export const actionZoomIn = register({
+//   name: "zoomIn",
+//   viewMode: true,
+//   trackEvent: { category: "canvas" },
+//   perform: (_elements, appState, _, app) => {
+//     return {
+//       appState: {
+//         ...appState,
+//         ...getStateForZoom(
+//           {
+//             viewportX: appState.width / 2 + appState.offsetLeft,
+//             viewportY: appState.height / 2 + appState.offsetTop,
+//             nextZoom: getNormalizedZoom(appState.zoom.value + ZOOM_STEP),
+//           },
+//           appState,
+//         ),
+//         userToFollow: null,
+//       },
+//       commitToHistory: false,
+//     };
+//   },
+//   PanelComponent: ({ updateData }) => (
+//     <ToolButton
+//       type="button"
+//       className="zoom-in-button zoom-button"
+//       icon={ZoomInIcon}
+//       title={`${t("buttons.zoomIn")} — ${getShortcutKey("CtrlOrCmd++")}`}
+//       aria-label={t("buttons.zoomIn")}
+//       onClick={() => {
+//         updateData(null);
+//       }}
+//     />
+//   ),
+//   keyTest: (event) =>
+//     (event.code === CODES.EQUAL || event.code === CODES.NUM_ADD) &&
+//     (event[KEYS.CTRL_OR_CMD] || event.shiftKey),
+// });
 
-export const actionZoomOut = register({
-  name: "zoomOut",
-  viewMode: true,
-  trackEvent: { category: "canvas" },
-  perform: (_elements, appState, _, app) => {
-    return {
-      appState: {
-        ...appState,
-        ...getStateForZoom(
-          {
-            viewportX: appState.width / 2 + appState.offsetLeft,
-            viewportY: appState.height / 2 + appState.offsetTop,
-            nextZoom: getNormalizedZoom(appState.zoom.value - ZOOM_STEP),
-          },
-          appState,
-        ),
-        userToFollow: null,
-      },
-      commitToHistory: false,
-    };
-  },
-  PanelComponent: ({ updateData }) => (
-    <ToolButton
-      type="button"
-      className="zoom-out-button zoom-button"
-      icon={ZoomOutIcon}
-      title={`${t("buttons.zoomOut")} — ${getShortcutKey("CtrlOrCmd+-")}`}
-      aria-label={t("buttons.zoomOut")}
-      onClick={() => {
-        updateData(null);
-      }}
-    />
-  ),
-  keyTest: (event) =>
-    (event.code === CODES.MINUS || event.code === CODES.NUM_SUBTRACT) &&
-    (event[KEYS.CTRL_OR_CMD] || event.shiftKey),
-});
+// export const actionZoomOut = register({
+//   name: "zoomOut",
+//   viewMode: true,
+//   trackEvent: { category: "canvas" },
+//   perform: (_elements, appState, _, app) => {
+//     return {
+//       appState: {
+//         ...appState,
+//         ...getStateForZoom(
+//           {
+//             viewportX: appState.width / 2 + appState.offsetLeft,
+//             viewportY: appState.height / 2 + appState.offsetTop,
+//             nextZoom: getNormalizedZoom(appState.zoom.value - ZOOM_STEP),
+//           },
+//           appState,
+//         ),
+//         userToFollow: null,
+//       },
+//       commitToHistory: false,
+//     };
+//   },
+//   PanelComponent: ({ updateData }) => (
+//     <ToolButton
+//       type="button"
+//       className="zoom-out-button zoom-button"
+//       icon={ZoomOutIcon}
+//       title={`${t("buttons.zoomOut")} — ${getShortcutKey("CtrlOrCmd+-")}`}
+//       aria-label={t("buttons.zoomOut")}
+//       onClick={() => {
+//         updateData(null);
+//       }}
+//     />
+//   ),
+//   keyTest: (event) =>
+//     (event.code === CODES.MINUS || event.code === CODES.NUM_SUBTRACT) &&
+//     (event[KEYS.CTRL_OR_CMD] || event.shiftKey),
+// });
 
 export const actionResetZoom = register({
   name: "resetZoom",

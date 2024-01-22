@@ -266,13 +266,13 @@ const LayerUI = ({
                           "zen-mode": appState.zenModeEnabled,
                         })}
                       >
-                        <HintViewer
+                        {/* <HintViewer
                           appState={appState}
                           isMobile={device.editor.isMobile}
                           device={device}
                           app={app}
-                        />
-                        {heading}
+                        /> */}
+                        {/* {heading} */}
                         <Stack.Row gap={1}>
                           <PenModeButton
                             zenModeEnabled={appState.zenModeEnabled}
@@ -281,20 +281,13 @@ const LayerUI = ({
                             title={t("toolBar.penMode")}
                             penDetected={appState.penDetected}
                           />
-                          <LockButton
+                          {/* <LockButton
                             checked={appState.activeTool.locked}
                             onChange={onLockToggle}
                             title={t("toolBar.lock")}
-                          />
+                          /> */}
 
-                          <div className="App-toolbar__divider" />
-
-                          <HandButton
-                            checked={isHandToolActive(appState)}
-                            onChange={() => onHandToolToggle()}
-                            title={t("toolBar.hand")}
-                            isMobile
-                          />
+                          {/* <div className="App-toolbar__divider" /> */}
 
                           <ShapesSwitcher
                             appState={appState}
@@ -302,9 +295,19 @@ const LayerUI = ({
                             UIOptions={UIOptions}
                             app={app}
                           />
+                          <LaserPointerButton
+                            title={t("toolBar.laser")}
+                            checked={
+                              appState.activeTool.type === TOOL_TYPE.laser
+                            }
+                            onChange={() =>
+                              app.setActiveTool({ type: TOOL_TYPE.laser })
+                            }
+                            isMobile
+                          />
                         </Stack.Row>
                       </Island>
-                      {isCollaborating && (
+                      {/* {isCollaborating && (
                         <Island
                           style={{
                             marginLeft: 8,
@@ -323,7 +326,7 @@ const LayerUI = ({
                             isMobile
                           />
                         </Island>
-                      )}
+                      )} */}
                     </Stack.Row>
                   </Stack.Col>
                 </div>

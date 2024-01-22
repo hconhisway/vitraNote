@@ -39,7 +39,7 @@ import {
   actionDecreaseFontSize,
   actionIncreaseFontSize,
 } from "../actions/actionProperties";
-import { actionZoomIn, actionZoomOut } from "../actions/actionCanvas";
+// import { actionZoomIn, actionZoomOut } from "../actions/actionCanvas";
 import App from "../components/App";
 import { LinearElementEditor } from "./linearElementEditor";
 import { parseClipboard } from "../clipboard";
@@ -377,15 +377,17 @@ export const textWysiwyg = ({
   }
 
   editable.onkeydown = (event) => {
-    if (!event.shiftKey && actionZoomIn.keyTest(event)) {
-      event.preventDefault();
-      app.actionManager.executeAction(actionZoomIn);
-      updateWysiwygStyle();
-    } else if (!event.shiftKey && actionZoomOut.keyTest(event)) {
-      event.preventDefault();
-      app.actionManager.executeAction(actionZoomOut);
-      updateWysiwygStyle();
-    } else if (actionDecreaseFontSize.keyTest(event)) {
+    // if (!event.shiftKey && actionZoomIn.keyTest(event)) {
+    //   event.preventDefault();
+    //   app.actionManager.executeAction(actionZoomIn);
+    //   updateWysiwygStyle();
+    // } else if (!event.shiftKey && actionZoomOut.keyTest(event)) {
+    //   event.preventDefault();
+    //   app.actionManager.executeAction(actionZoomOut);
+    //   updateWysiwygStyle();
+    // } else 
+    
+    if (actionDecreaseFontSize.keyTest(event)) {
       app.actionManager.executeAction(actionDecreaseFontSize);
     } else if (actionIncreaseFontSize.keyTest(event)) {
       app.actionManager.executeAction(actionIncreaseFontSize);

@@ -118,6 +118,7 @@ const InteractiveCanvas = (props: InteractiveCanvasProps) => {
         visibleElements: props.visibleElements,
         selectedElements: props.selectedElements,
         scale: window.devicePixelRatio,
+        // scale: 1,
         appState: props.appState,
         renderConfig: {
           remotePointerViewportCoords: pointerViewportCoords,
@@ -140,14 +141,17 @@ const InteractiveCanvas = (props: InteractiveCanvasProps) => {
       style={{
         width: props.appState.width,
         height: props.appState.height,
+        border: "7px solid #000",
         cursor: props.appState.viewModeEnabled
           ? CURSOR_TYPE.GRAB
           : CURSOR_TYPE.AUTO,
       }}
       width={props.appState.width * props.scale}
       height={props.appState.height * props.scale}
+      // width = {props.appState.width}
+      // height = {props.appState.width}
       ref={props.handleCanvasRef}
-      onContextMenu={props.onContextMenu}
+      // onContextMenu={props.onContextMenu}
       onPointerMove={props.onPointerMove}
       onPointerUp={props.onPointerUp}
       onPointerCancel={props.onPointerCancel}

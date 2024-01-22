@@ -1456,7 +1456,14 @@ class App extends React.Component<AppProps, AppState> {
           ["--ui-pointerEvents" as any]: shouldBlockPointerEvents
             ? POINTER_EVENTS.disabled
             : POINTER_EVENTS.enabled,
-        }}
+            // position: 'absolute', // 使用绝对定位
+            // top: '200px', // 距顶部200像素
+            // left: '400px', // 距左侧400像素
+            // right: '400px', // 距右侧400像素
+            // bottom: '200px', // 可以设置底部距离来控制容器高度
+            // margin: 'auto',
+          }}
+
         ref={this.excalidrawContainerRef}
         onDrop={this.handleAppOnDrop}
         tabIndex={0}
@@ -4773,9 +4780,10 @@ class App extends React.Component<AppProps, AppState> {
           ? 1
           : distance / gesture.initialDistance;
 
-      const nextZoom = scaleFactor
-        ? getNormalizedZoom(initialScale * scaleFactor)
-        : this.state.zoom.value;
+      // const nextZoom = scaleFactor
+      //   ? getNormalizedZoom(initialScale * scaleFactor)
+      //   : this.state.zoom.value;
+      const nextZoom = scaleFactor ? getNormalizedZoom(1) : getNormalizedZoom(1);
 
       this.setState((state) => {
         const zoomState = getStateForZoom(
@@ -8703,7 +8711,7 @@ class App extends React.Component<AppProps, AppState> {
       // NOTE wheel, touchstart, touchend events must be registered outside
       // of react because react binds them them passively (so we can't prevent
       // default on them)
-      this.interactiveCanvas.addEventListener(EVENT.WHEEL, this.handleWheel);
+      // this.interactiveCanvas.addEventListener(EVENT.WHEEL, this.handleWheel);
       this.interactiveCanvas.addEventListener(
         EVENT.TOUCH_START,
         this.onTouchStart,

@@ -320,9 +320,13 @@
   }
 
   .App-menu_top {
+    transform: scale(1.9);
+    transform-origin: center;
     grid-template-columns: 1fr 2fr 1fr;
+    margin-top: 20px;
     grid-gap: 2rem;
     align-items: flex-start;
+    // display: flex;
     cursor: default;
     pointer-events: none !important;
 
@@ -337,17 +341,17 @@
   }
 
   .App-menu_top > *:first-child {
-    justify-self: flex-start;
+    justify-self: flex-end;
   }
 
   .App-menu_top > *:last-child {
-    justify-self: flex-end;
+    justify-self: flex-start;
   }
 
   .App-menu_bottom {
     position: absolute;
     bottom: 1rem;
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: flex-start;
     cursor: default;
@@ -646,6 +650,7 @@
   }
 
   .main-menu-trigger {
+    display: none;
     @include filledButtonOnCanvas;
   }
 

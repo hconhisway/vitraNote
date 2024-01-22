@@ -27,14 +27,14 @@ export const getStateForZoom = (
   const baseScrollY = appState.scrollY + (appLayerY - appLayerY / currentZoom);
 
   // get scroll offsets for target zoom level
-  const zoomOffsetScrollX = -(appLayerX - appLayerX / nextZoom);
-  const zoomOffsetScrollY = -(appLayerY - appLayerY / nextZoom);
+  const zoomOffsetScrollX = -(appLayerX - appLayerX / 1 as NormalizedZoomValue);
+  const zoomOffsetScrollY = -(appLayerY - appLayerY / 1 as NormalizedZoomValue);
 
   return {
     scrollX: baseScrollX + zoomOffsetScrollX,
     scrollY: baseScrollY + zoomOffsetScrollY,
     zoom: {
-      value: nextZoom,
+      value: 1 as NormalizedZoomValue,
     },
   };
 };

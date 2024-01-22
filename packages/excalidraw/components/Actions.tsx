@@ -273,14 +273,15 @@ export const ShapesSwitcher = ({
               if (appState.activeTool.type !== value) {
                 trackEvent("toolbar", value, "ui");
               }
-              if (value === "image") {
-                app.setActiveTool({
-                  type: value,
-                  insertOnCanvasDirectly: pointerType !== "mouse",
-                });
-              } else {
+              // if (value === "image") {
+              //   app.setActiveTool({
+              //     type: value,
+              //     insertOnCanvasDirectly: pointerType !== "mouse",
+              //   });
+              // } 
+              // else {
                 app.setActiveTool({ type: value });
-              }
+              // }
             }}
           />
         );
