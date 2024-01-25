@@ -586,9 +586,9 @@ export const textWysiwyg = ({
     editable.oninput = null;
     editable.onkeydown = null;
 
-    if (observer) {
-      observer.disconnect();
-    }
+    // if (observer) {
+    //   observer.disconnect();
+    // }
 
     window.removeEventListener("resize", updateWysiwygStyle);
     window.removeEventListener("wheel", stopEvent, true);
@@ -697,15 +697,15 @@ export const textWysiwyg = ({
 
   // reposition wysiwyg in case of canvas is resized. Using ResizeObserver
   // is preferred so we catch changes from host, where window may not resize.
-  let observer: ResizeObserver | null = null;
-  if (canvas && "ResizeObserver" in window) {
-    observer = new window.ResizeObserver(() => {
-      updateWysiwygStyle();
-    });
-    observer.observe(canvas);
-  } else {
-    window.addEventListener("resize", updateWysiwygStyle);
-  }
+  // let observer: ResizeObserver | null = null;
+  // if (canvas && "ResizeObserver" in window) {
+  //   observer = new window.ResizeObserver(() => {
+  //     updateWysiwygStyle();
+  //   });
+  //   observer.observe(canvas);
+  // } else {
+  //   window.addEventListener("resize", updateWysiwygStyle);
+  // }
 
   window.addEventListener("pointerdown", onPointerDown);
   window.addEventListener("wheel", stopEvent, {

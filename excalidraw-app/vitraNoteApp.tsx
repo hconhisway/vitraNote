@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "../packages/excalidraw/analytics";
 import { ErrorDialog } from "../packages/excalidraw/components/ErrorDialog";
 import { TopErrorBoundary } from "./components/TopErrorBoundary";
+// import SquareGallery from "../packages/excalidraw/components/VisGallery";
+
 import {
   APP_NAME,
   EVENT,
@@ -390,7 +392,7 @@ const ExcalidrawWrapper = () => {
     };
 
     const titleTimeout = setTimeout(
-      () => (document.title = APP_NAME),
+      () => (document.title = "VitraNote"),
       TITLE_TIMEOUT,
     );
 
@@ -605,41 +607,8 @@ const ExcalidrawWrapper = () => {
         initialData={initialStatePromiseRef.current.promise}
         isCollaborating={isCollaborating}
         onPointerUpdate={collabAPI?.onPointerUpdate}
-        // UIOptions={{
-        //   canvasActions: {
-        //     toggleTheme: true,
-        //     export: {
-        //       onExportToBackend,
-        //       renderCustomUI: (elements, appState, files) => {
-        //         return (
-        //           <ExportToExcalidrawPlus
-        //             elements={elements}
-        //             appState={appState}
-        //             files={files}
-        //             onError={(error) => {
-        //               excalidrawAPI?.updateScene({
-        //                 appState: {
-        //                   errorMessage: error.message,
-        //                 },
-        //               });
-        //             }}
-        //             onSuccess={() => {
-        //               excalidrawAPI?.updateScene({
-        //                 appState: { openDialog: null },
-        //               });
-        //             }}
-        //           />
-        //         );
-        //       },
-        //     },
-        //   },
-        // }}
-        // langCode={langCode}
-        // renderCustomStats={renderCustomStats}
-        // detectScroll={false}
         handleKeyboardGlobally={true}
         autoFocus={true}
-        // theme={theme}
         renderTopRightUI={(isMobile) => {
           if (isMobile || !collabAPI || isCollabDisabled) {
             return null;
@@ -652,89 +621,6 @@ const ExcalidrawWrapper = () => {
           );
         }}
       >
-        {/* <AppMainMenu
-          setCollabDialogShown={setCollabDialogShown}
-          isCollaborating={isCollaborating}
-          isCollabEnabled={!isCollabDisabled}
-        /> */}
-        {/* <OverwriteConfirmDialog>
-          <OverwriteConfirmDialog.Actions.ExportToImage />
-          <OverwriteConfirmDialog.Actions.SaveToDisk />
-          {excalidrawAPI && (
-            <OverwriteConfirmDialog.Action
-              title={t("overwriteConfirm.action.excalidrawPlus.title")}
-              actionLabel={t("overwriteConfirm.action.excalidrawPlus.button")}
-              onClick={() => {
-                exportToExcalidrawPlus(
-                  excalidrawAPI.getSceneElements(),
-                  excalidrawAPI.getAppState(),
-                  excalidrawAPI.getFiles(),
-                );
-              }}
-            >
-              {t("overwriteConfirm.action.excalidrawPlus.description")}
-            </OverwriteConfirmDialog.Action>
-          )}
-        </OverwriteConfirmDialog> */}
-        {/* <AppFooter /> */}
-        {/* <TTDDialog
-          onTextSubmit={async (input) => {
-            try {
-              const response = await fetch(
-                `${
-                  import.meta.env.VITE_APP_AI_BACKEND
-                }/v1/ai/text-to-diagram/generate`,
-                {
-                  method: "POST",
-                  headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ prompt: input }),
-                },
-              );
-
-              const rateLimit = response.headers.has("X-Ratelimit-Limit")
-                ? parseInt(response.headers.get("X-Ratelimit-Limit") || "0", 10)
-                : undefined;
-
-              const rateLimitRemaining = response.headers.has(
-                "X-Ratelimit-Remaining",
-              )
-                ? parseInt(
-                    response.headers.get("X-Ratelimit-Remaining") || "0",
-                    10,
-                  )
-                : undefined;
-
-              const json = await response.json();
-
-              if (!response.ok) {
-                if (response.status === 429) {
-                  return {
-                    rateLimit,
-                    rateLimitRemaining,
-                    error: new Error(
-                      "Too many requests today, please try again tomorrow!",
-                    ),
-                  };
-                }
-
-                throw new Error(json.message || "Generation failed...");
-              }
-
-              const generatedResponse = json.generatedResponse;
-              if (!generatedResponse) {
-                throw new Error("Generation failed...");
-              }
-
-              return { generatedResponse, rateLimit, rateLimitRemaining };
-            } catch (err: any) {
-              throw new Error("Request failed");
-            }
-          }}
-        /> */}
-        {/* <TTDDialogTrigger /> */}
         {isCollaborating && isOffline && (
           <div className="collab-offline-warning">
             {t("alerts.collabOfflineWarning")}

@@ -17,7 +17,7 @@ import { trackEvent } from "../../packages/excalidraw/analytics";
 import throttle from "lodash.throttle";
 import { newElementWith } from "../../packages/excalidraw/element/mutateElement";
 import { BroadcastedExcalidrawElement } from "./reconciliation";
-import { encryptData } from "../../packages/excalidraw/data/encryption";
+// import { encryptData } from "../../packages/excalidraw/data/encryption";
 import { PRECEDING_ELEMENT_KEY } from "../../packages/excalidraw/constants";
 import type { Socket } from "socket.io-client";
 
@@ -81,6 +81,24 @@ class Portal {
     );
   }
 
+  // async _broadcastSocketData(
+  //   data: SocketUpdateData,
+  //   volatile: boolean = false,
+  //   roomId?: string,
+  // ) {
+  //   if (this.isOpen()) {
+  //     const json = JSON.stringify(data);
+  //     const encoded = new TextEncoder().encode(json);
+  //     const { encryptedBuffer, iv } = await encryptData(this.roomKey!, encoded);
+
+  //     this.socket?.emit(
+  //       volatile ? WS_EVENTS.SERVER_VOLATILE : WS_EVENTS.SERVER,
+  //       roomId ?? this.roomId,
+  //       encryptedBuffer,
+  //       iv,
+  //     );
+  //   }
+  // }
   async _broadcastSocketData(
     data: SocketUpdateData,
     volatile: boolean = false,
@@ -88,14 +106,12 @@ class Portal {
   ) {
     if (this.isOpen()) {
       const json = JSON.stringify(data);
-      const encoded = new TextEncoder().encode(json);
-      const { encryptedBuffer, iv } = await encryptData(this.roomKey!, encoded);
 
+      // 直接发送JSON字符串，不使用加密
       this.socket?.emit(
         volatile ? WS_EVENTS.SERVER_VOLATILE : WS_EVENTS.SERVER,
         roomId ?? this.roomId,
-        encryptedBuffer,
-        iv,
+        json, // 发送JSON字符串
       );
     }
   }
@@ -252,6 +268,20 @@ class Portal {
       this.socket.emit(WS_EVENTS.USER_FOLLOW_CHANGE, payload);
     }
   };
+
+  // broadcastImage = async (image: string) => {
+  //   if (this.isOpen()) {
+  //     const data: SocketUpdateDataSource["IMAGE_UPLOAD"] = {
+  //       type: WS_SUBTYPES.IMAGE_UPLOAD,
+  //       payload: {
+  //         image,
+  //         roomId: this.roomId!, // 使用非空断言
+  //       },
+  //     };
+
+  //     await this._broadcastSocketData(data as SocketUpdateData);
+  //   }
+  // };
 }
 
 export default Portal;

@@ -136,33 +136,66 @@ const InteractiveCanvas = (props: InteractiveCanvasProps) => {
   });
 
   return (
-    <canvas
-      className="excalidraw__canvas interactive"
-      style={{
-        width: props.appState.width,
-        height: props.appState.height,
-        border: "7px solid #000",
-        cursor: props.appState.viewModeEnabled
-          ? CURSOR_TYPE.GRAB
-          : CURSOR_TYPE.AUTO,
-      }}
-      width={props.appState.width * props.scale}
-      height={props.appState.height * props.scale}
-      // width = {props.appState.width}
-      // height = {props.appState.width}
-      ref={props.handleCanvasRef}
-      // onContextMenu={props.onContextMenu}
-      onPointerMove={props.onPointerMove}
-      onPointerUp={props.onPointerUp}
-      onPointerCancel={props.onPointerCancel}
-      onTouchMove={props.onTouchMove}
-      onPointerDown={props.onPointerDown}
-      onDoubleClick={
-        props.appState.viewModeEnabled ? undefined : props.onDoubleClick
-      }
-    >
-      {t("labels.drawingCanvas")}
-    </canvas>
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      width: '100%',
+      height: '100%'
+    }}>
+      <canvas
+        className="excalidraw__canvas interactive"
+        id="myCanvas"
+        style={{
+          width: '100%',
+          height: '100%',
+          border: "7px solid #000",
+          cursor: props.appState.viewModeEnabled
+            ? CURSOR_TYPE.GRAB
+            : CURSOR_TYPE.AUTO,
+        }}
+        width={props.appState.width * props.scale}
+        height={props.appState.height * props.scale}
+        ref={props.handleCanvasRef}
+        onPointerMove={props.onPointerMove}
+        onPointerUp={props.onPointerUp}
+        onPointerCancel={props.onPointerCancel}
+        onTouchMove={props.onTouchMove}
+        onPointerDown={props.onPointerDown}
+        onDoubleClick={
+          props.appState.viewModeEnabled ? undefined : props.onDoubleClick
+        }
+      >
+        {t("labels.drawingCanvas")}
+      </canvas>
+    </div>
+    // <canvas
+    //   className="excalidraw__canvas interactive"
+    //   style={{
+    //     width: props.appState.width,
+    //     height: props.appState.height,
+    //     border: "0px solid #000",
+    //     cursor: props.appState.viewModeEnabled
+    //       ? CURSOR_TYPE.GRAB
+    //       : CURSOR_TYPE.AUTO,
+    //   }}
+    //   width={props.appState.width * props.scale}
+    //   height={props.appState.height * props.scale}
+    //   // width = {props.appState.width}
+    //   // height = {props.appState.width}
+    //   ref={props.handleCanvasRef}
+    //   // onContextMenu={props.onContextMenu}
+    //   onPointerMove={props.onPointerMove}
+    //   onPointerUp={props.onPointerUp}
+    //   onPointerCancel={props.onPointerCancel}
+    //   onTouchMove={props.onTouchMove}
+    //   onPointerDown={props.onPointerDown}
+    //   onDoubleClick={
+    //     props.appState.viewModeEnabled ? undefined : props.onDoubleClick
+    //   }
+    // >
+    //   {t("labels.drawingCanvas")}
+    // </canvas>
   );
 };
 

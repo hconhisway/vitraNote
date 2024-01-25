@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { flushSync } from "react-dom";
-
+import SquareGallery from "./VisGallery";
 import { RoughCanvas } from "roughjs/bin/canvas";
 import rough from "roughjs/bin/rough";
 import clsx from "clsx";
@@ -8418,6 +8418,24 @@ class App extends React.Component<AppProps, AppState> {
     }
   };
 
+  // api.js
+  private getCurrentImage = async () => {
+
+      const response = await fetch('http://localhost:3002/images/current');
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const { data, type, name } = await response.json();
+      // console.log(type);
+      // 转换 Base64 编码的数据为 Blob
+      const blob = await (await fetch(data)).blob();
+      // 创建 File 对象
+      const imageFile = new File([blob], name, { type });
+
+      return imageFile;
+  };
+
+
   private onImageAction = async ({
     insertOnCanvasDirectly,
   }: {
@@ -8432,47 +8450,52 @@ class App extends React.Component<AppProps, AppState> {
         this.state,
       );
 
-      const imageFile = await fileOpen({
-        description: "Image",
-        extensions: Object.keys(
-          IMAGE_MIME_TYPES,
-        ) as (keyof typeof IMAGE_MIME_TYPES)[],
-      });
+      // const imageFile = await fileOpen({
+      //   description: "Image",
+      //   extensions: Object.keys(
+      //     IMAGE_MIME_TYPES,
+      //   ) as (keyof typeof IMAGE_MIME_TYPES)[],
+      // });
+      // console.log(imageFile);
+      const imageFile = await this.getCurrentImage();
+      // console.log(imageFile);
 
       const imageElement = this.createImageElement({
         sceneX: x,
         sceneY: y,
         addToFrameUnderCursor: false,
       });
-
+      insertOnCanvasDirectly = true;
       if (insertOnCanvasDirectly) {
         this.insertImageElement(imageElement, imageFile);
-        this.initializeImageDimensions(imageElement);
-        this.setState(
-          {
-            selectedElementIds: makeNextSelectedElementIds(
-              { [imageElement.id]: true },
-              this.state,
-            ),
-          },
-          () => {
-            this.actionManager.executeAction(actionFinalize);
-          },
-        );
-      } else {
-        this.setState(
-          {
-            pendingImageElementId: imageElement.id,
-          },
-          () => {
-            this.insertImageElement(
-              imageElement,
-              imageFile,
-              /* showCursorImagePreview */ true,
-            );
-          },
-        );
+        // this.initializeImageDimensions(imageElement);
+        // this.setState(
+        //   {
+        //     selectedElementIds: makeNextSelectedElementIds(
+        //       { [imageElement.id]: true },
+        //       this.state,
+        //     ),
+        //   },
+        //   () => {
+        //     this.actionManager.executeAction(actionFinalize);
+        //   },
+        // );
       }
+      
+      // else {
+      //   this.setState(
+      //     {
+      //       pendingImageElementId: imageElement.id,
+      //     },
+      //     () => {
+      //       this.insertImageElement(
+      //         imageElement,
+      //         imageFile,
+      //         /* showCursorImagePreview */ true,
+      //       );
+      //     },
+      //   );
+      // }
     } catch (error: any) {
       if (error.name !== "AbortError") {
         console.error(error);
@@ -9361,11 +9384,13 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   private savePointer = (x: number, y: number, button: "up" | "down") => {
+    // x *= 0.6;
+    // y *= 0.6;
     if (!x || !y) {
       return;
     }
     const { x: sceneX, y: sceneY } = viewportCoordsToSceneCoords(
-      { clientX: x, clientY: y },
+      { clientX: x, clientY: y},
       this.state,
     );
 

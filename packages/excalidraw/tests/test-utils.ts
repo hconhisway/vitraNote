@@ -219,16 +219,16 @@ export const toggleMenu = (container: HTMLElement) => {
 
 export const togglePopover = (label: string) => {
   // Needed for radix-ui/react-popover as tests fail due to resize observer not being present
-  (global as any).ResizeObserver = class ResizeObserver {
-    constructor(cb: any) {
-      (this as any).cb = cb;
-    }
+  // (global as any).ResizeObserver = class ResizeObserver {
+  //   constructor(cb: any) {
+  //     (this as any).cb = cb;
+  //   }
 
-    observe() {}
+  //   observe() {}
 
-    unobserve() {}
-    disconnect() {}
-  };
+  //   unobserve() {}
+  //   disconnect() {}
+  // };
 
   UI.clickLabeledElement(label);
 };

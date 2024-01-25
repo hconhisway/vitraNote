@@ -237,6 +237,22 @@ class Collab extends PureComponent<Props, CollabState> {
 
   isCollaborating = () => appJotaiStore.get(isCollaboratingAtom)!;
 
+  // handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = e.target.files && e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = (event: ProgressEvent<FileReader>) => {
+  //       const result = event.target?.result;
+  //       if (typeof result === 'string') {
+  //         // 调用 this.portal.broadcastImage 发送图片
+  //         const roomId = this.portal.roomId; // 或者其他方式获取 roomId
+  //         this.portal.broadcastImage(result, roomId);
+  //       }
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
+
   private setIsCollaborating = (isCollaborating: boolean) => {
     appJotaiStore.set(isCollaboratingAtom, isCollaborating);
   };
@@ -498,112 +514,79 @@ class Collab extends PureComponent<Props, CollabState> {
       INITIAL_SCENE_UPDATE_TIMEOUT,
     );
 
-    // All socket listeners are moving to Portal
-    this.portal.socket.on(
-      "client-broadcast",
-      async (encryptedData: ArrayBuffer, iv: Uint8Array) => {
-        if (!this.portal.roomKey) {
-          return;
+    this.portal.socket.on("client-broadcast", async (jsonData: string) => {
+      const data: ValueOf<SocketUpdateDataSource> = JSON.parse(jsonData);
+
+      switch (data.type) {
+        case WS_SUBTYPES.INVALID_RESPONSE:
+          break;
+        case WS_SUBTYPES.INIT: {
+          if (!this.portal.socketInitialized) {
+            this.initializeRoom({ fetchScene: false });
+            const remoteElements = data.payload.elements;
+            const reconciledElements = this.reconcileElements(remoteElements);
+            this.handleRemoteSceneUpdate(reconciledElements, {
+              init: true,
+            });
+            // noop if already resolved via init from firebase
+            scenePromise.resolve({
+              elements: reconciledElements,
+              scrollToContent: true,
+            });
+          }
+          break;
         }
+        case WS_SUBTYPES.UPDATE:
+          // Handle the UPDATE case
+          this.handleRemoteSceneUpdate(
+            this.reconcileElements(data.payload.elements),
+          );
+          break;
 
-        const decryptedData = await this.decryptPayload(
-          iv,
-          encryptedData,
-          this.portal.roomKey,
-        );
+        case WS_SUBTYPES.MOUSE_LOCATION:
+          // Handle the MOUSE_LOCATION case
+          const { pointer, button, username, selectedElementIds } =
+            data.payload;
+          const socketId = data.payload.socketId;
+          this.updateCollaborator(socketId, {
+            pointer,
+            button,
+            selectedElementIds,
+            username,
+          });
+          break;
 
-        switch (decryptedData.type) {
-          case WS_SUBTYPES.INVALID_RESPONSE:
-            return;
-          case WS_SUBTYPES.INIT: {
-            if (!this.portal.socketInitialized) {
-              this.initializeRoom({ fetchScene: false });
-              const remoteElements = decryptedData.payload.elements;
-              const reconciledElements = this.reconcileElements(remoteElements);
-              this.handleRemoteSceneUpdate(reconciledElements, {
-                init: true,
-              });
-              // noop if already resolved via init from firebase
-              scenePromise.resolve({
-                elements: reconciledElements,
-                scrollToContent: true,
-              });
-            }
-            break;
+        case WS_SUBTYPES.IMAGE_UPLOAD:
+          // Handle the IMAGE_UPLOAD case
+          break;
+
+        case WS_SUBTYPES.IDLE_STATUS:
+          // Handle the IDLE_STATUS case
+          const {
+            userState,
+            socketId: idleSocketId,
+            username: idleUsername,
+          } = data.payload;
+          this.updateCollaborator(idleSocketId, {
+            userState,
+            username: idleUsername,
+          });
+          break;
+
+        case WS_SUBTYPES.USER_VISIBLE_SCENE_BOUNDS:
+          // Handle the USER_VISIBLE_SCENE_BOUNDS case
+          const { sceneBounds, socketId: boundsSocketId } = data.payload;
+          const appState = this.excalidrawAPI.getAppState();
+          if (appState.userToFollow?.socketId !== boundsSocketId) {
+            // handle case or log warning
           }
-          case WS_SUBTYPES.UPDATE:
-            this.handleRemoteSceneUpdate(
-              this.reconcileElements(decryptedData.payload.elements),
-            );
-            break;
-          case WS_SUBTYPES.MOUSE_LOCATION: {
-            const { pointer, button, username, selectedElementIds } =
-              decryptedData.payload;
-
-            const socketId: SocketUpdateDataSource["MOUSE_LOCATION"]["payload"]["socketId"] =
-              decryptedData.payload.socketId ||
-              // @ts-ignore legacy, see #2094 (#2097)
-              decryptedData.payload.socketID;
-
-            this.updateCollaborator(socketId, {
-              pointer,
-              button,
-              selectedElementIds,
-              username,
-            });
-
-            break;
-          }
-
-          case WS_SUBTYPES.USER_VISIBLE_SCENE_BOUNDS: {
-            const { sceneBounds, socketId } = decryptedData.payload;
-
-            const appState = this.excalidrawAPI.getAppState();
-
-            // we're not following the user
-            // (shouldn't happen, but could be late message or bug upstream)
-            if (appState.userToFollow?.socketId !== socketId) {
-              console.warn(
-                `receiving remote client's (from ${socketId}) viewport bounds even though we're not subscribed to it!`,
-              );
-              return;
-            }
-
-            // cross-follow case, ignore updates in this case
-            if (
-              appState.userToFollow &&
-              appState.followedBy.has(appState.userToFollow.socketId)
-            ) {
-              return;
-            }
-
-            this.excalidrawAPI.updateScene({
-              appState: zoomToFitBounds({
-                appState,
-                bounds: sceneBounds,
-                fitToViewport: true,
-                viewportZoomFactor: 1,
-              }).appState,
-            });
-
-            break;
-          }
-
-          case WS_SUBTYPES.IDLE_STATUS: {
-            const { userState, socketId, username } = decryptedData.payload;
-            this.updateCollaborator(socketId, {
-              userState,
-              username,
-            });
-            break;
-          }
-
-          default: {
-            assertNever(decryptedData, null);
-          }
+          // Additional logic for USER_VISIBLE_SCENE_BOUNDS
+          break;
+        default: {
+          assertNever(data, null);
         }
-      },
-    );
+      }
+    });
 
     this.portal.socket.on("first-in-room", async () => {
       if (this.portal.socket) {

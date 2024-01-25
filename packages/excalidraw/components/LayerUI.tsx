@@ -54,7 +54,7 @@ import { LibraryIcon } from "./icons";
 import { UIAppStateContext } from "../context/ui-appState";
 import { DefaultSidebar } from "./DefaultSidebar";
 import { EyeDropper, activeEyeDropperAtom } from "./EyeDropper";
-
+import SquareGallery from "./VisGallery"
 import "./LayerUI.scss";
 import "./Toolbar.scss";
 import { mutateElement } from "../element/mutateElement";
@@ -356,6 +356,12 @@ const LayerUI = ({
               )}
           </div>
         </div>
+        <SquareGallery
+          appState={appState}
+          activeTool={appState.activeTool}
+          UIOptions={UIOptions}
+          app={app}
+        />
       </FixedSideContainer>
     );
   };

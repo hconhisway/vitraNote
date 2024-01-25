@@ -54,7 +54,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: "Excalidraw",
+        title: "VitraNote",
         logo: {
           alt: "Excalidraw Logo",
           src: "img/logo.svg",

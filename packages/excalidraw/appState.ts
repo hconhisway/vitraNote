@@ -44,7 +44,7 @@ export const getDefaultAppState = (): Omit<
     editingGroupId: null,
     editingLinearElement: null,
     activeTool: {
-      type: "selection",
+      type: "laser",
       customType: null,
       locked: DEFAULT_ELEMENT_PROPS.locked,
       lastActiveTool: null,

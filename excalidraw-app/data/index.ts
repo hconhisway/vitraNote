@@ -141,6 +141,13 @@ export type SocketUpdateDataSource = {
       username: string;
     };
   };
+  IMAGE_UPLOAD: {
+    type: WS_SUBTYPES.IMAGE_UPLOAD;
+    payload: {
+      image: string; // 或者根据您的需求调整数据类型
+      roomId: string; // 房间ID
+    };
+  };
 };
 
 export type SocketUpdateDataIncoming =
