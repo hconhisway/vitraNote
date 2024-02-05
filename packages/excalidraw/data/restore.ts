@@ -554,7 +554,7 @@ export const restoreAppState = (
         nextAppState.activeTool.type &&
           AllowedExcalidrawActiveTools[nextAppState.activeTool.type]
           ? nextAppState.activeTool
-          : { type: "selection" },
+          : { type: "laser" },
       ),
       lastActiveTool: null,
       locked: nextAppState.activeTool.locked ?? false,

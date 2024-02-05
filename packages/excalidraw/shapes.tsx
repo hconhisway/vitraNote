@@ -13,20 +13,20 @@ import {
 import { KEYS } from "./keys";
 
 export const SHAPES = [
-  // {
-  //   icon: SelectionIcon,
-  //   value: "selection",
-  //   key: KEYS.V,
-  //   numericKey: KEYS["1"],
-  //   fillable: true,
-  // },
   {
-    icon: RectangleIcon,
-    value: "rectangle",
-    key: KEYS.R,
-    numericKey: KEYS["2"],
+    icon: SelectionIcon,
+    value: "selection",
+    key: KEYS.V,
+    numericKey: KEYS["1"],
     fillable: true,
   },
+  // {
+  //   icon: RectangleIcon,
+  //   value: "rectangle",
+  //   key: KEYS.R,
+  //   numericKey: KEYS["2"],
+  //   fillable: true,
+  // },
   // {
   //   icon: DiamondIcon,
   //   value: "diamond",
@@ -41,13 +41,13 @@ export const SHAPES = [
   //   numericKey: KEYS["4"],
   //   fillable: true,
   // },
-  {
-    icon: ArrowIcon,
-    value: "arrow",
-    key: KEYS.A,
-    numericKey: KEYS["5"],
-    fillable: true,
-  },
+  // {
+  //   icon: ArrowIcon,
+  //   value: "arrow",
+  //   key: KEYS.A,
+  //   numericKey: KEYS["5"],
+  //   fillable: true,
+  // },
   // {
   //   icon: LineIcon,
   //   value: "line",

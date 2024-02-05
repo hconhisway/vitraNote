@@ -165,6 +165,7 @@ const initializeScene = async (opts: {
 
   let roomLinkData = getCollaborationLinkData(window.location.href);
   const isExternalScene = !!(id || jsonBackendMatch || roomLinkData);
+  // console.log(isExternalScene, externalUrlMatch)
   if (isExternalScene) {
     if (
       // don't prompt if scene is empty
@@ -229,7 +230,7 @@ const initializeScene = async (opts: {
 
   if (roomLinkData && opts.collabAPI) {
     const { excalidrawAPI } = opts;
-
+    // console.log(excalidrawAPI);
     const scene = await opts.collabAPI.startCollaboration(roomLinkData);
 
     return {

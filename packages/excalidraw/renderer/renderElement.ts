@@ -1394,6 +1394,7 @@ export const pathsCache = new WeakMap<ExcalidrawFreeDrawElement, Path2D>([]);
 
 export function generateFreeDrawShape(element: ExcalidrawFreeDrawElement) {
   const svgPathData = getFreeDrawSvgPath(element);
+  // console.log(svgPathData);
   const path = new Path2D(svgPathData);
   pathsCache.set(element, path);
   return path;

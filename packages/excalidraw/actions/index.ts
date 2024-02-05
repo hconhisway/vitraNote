@@ -23,8 +23,8 @@ export {
 export {
   actionChangeViewBackgroundColor,
   actionClearCanvas,
-  // actionZoomIn,
-  // actionZoomOut,
+  actionZoomIn,
+  actionZoomOut,
   actionResetZoom,
   actionZoomToFit,
   actionToggleTheme,

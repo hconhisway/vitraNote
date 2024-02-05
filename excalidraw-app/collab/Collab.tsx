@@ -580,7 +580,21 @@ class Collab extends PureComponent<Props, CollabState> {
           if (appState.userToFollow?.socketId !== boundsSocketId) {
             // handle case or log warning
           }
-          // Additional logic for USER_VISIBLE_SCENE_BOUNDS
+          if (
+            appState.userToFollow &&
+            appState.followedBy.has(appState.userToFollow.socketId)
+          ) {
+            return;
+          }
+
+          this.excalidrawAPI.updateScene({
+            appState: zoomToFitBounds({
+              appState,
+              bounds: sceneBounds,
+              fitToViewport: true,
+              viewportZoomFactor: 1,
+            }).appState,
+          });
           break;
         default: {
           assertNever(data, null);

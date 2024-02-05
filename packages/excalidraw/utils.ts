@@ -434,7 +434,7 @@ export const viewportCoordsToSceneCoords = (
 ) => {
   const x = (clientX - offsetLeft) / zoom.value - scrollX;
   const y = (clientY - offsetTop) / zoom.value - scrollY;
-
+  // console.log(x, y)
   return { x, y };
 };
 

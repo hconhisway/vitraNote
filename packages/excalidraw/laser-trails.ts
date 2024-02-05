@@ -5,16 +5,28 @@ import type App from "./components/App";
 import { SocketId } from "./types";
 import { easeOut } from "./utils";
 import { getClientColor } from "./clients";
+import {
+  importUsernameFromLocalStorage
+} from "../../excalidraw-app/data/localStorage";
+
+import io from 'socket.io-client';
+interface TrailPoint {
+  x: number;
+  y: number;
+  timestamp: number;
+}
 
 export class LaserTrails implements Trail {
   public localTrail: AnimatedTrail;
   private collabTrails = new Map<SocketId, AnimatedTrail>();
-
   private container?: SVGSVGElement;
-
+  // trailsData: { [key: number]: TrailPoint[] } = {};
   constructor(
     private animationFrameHandler: AnimationFrameHandler,
     private app: App,
+    private frameCounter: number = 0,
+    private socket = io('http://localhost:3002'),
+    private username = importUsernameFromLocalStorage(),
   ) {
     this.animationFrameHandler.register(this, this.onFrame.bind(this));
 
@@ -69,8 +81,62 @@ export class LaserTrails implements Trail {
     this.localTrail.stop();
   }
 
+  // extractTrailPoints(laserPointer) {
+  //   return laserPointer.originalPoints.map(([x, y, timestamp]) => ({ x, y, timestamp }));
+  // }
+  getCurrentTimeComponents() {
+    let now = new Date();
+    let hours = now.getHours();        // 获取当前小时
+    let minutes = now.getMinutes();    // 获取当前分钟
+    let seconds = now.getSeconds();    // 获取当前秒数
+    let milliseconds = now.getMilliseconds(); // 获取当前毫秒数
+
+    return [hours, minutes, seconds, milliseconds];
+  }
   onFrame() {
     this.updateCollabTrails();
+    if (this.localTrail.hasCurrentTrail) {
+      if (!this.frameCounter) this.frameCounter = 0;
+      this.frameCounter++;
+      const currentPoint = this.localTrail.currentTrail?.lastPoint.slice(0,2);
+      if (this.frameCounter % 1 === 0) {
+          let timeComponents = [0,0,0,0];
+          if (this.frameCounter % 1 === 0) { 
+            timeComponents = this.getCurrentTimeComponents();
+          }
+          // Data to be sent
+          const data = {
+              fileName: this.username + "_Laser",
+              timeComponent: timeComponents,
+              currentPoint: currentPoint
+          };
+  
+          // Send data to the backend
+          // this.socket.emit('trailData', data);
+          // console.log(data)
+      }
+    }
+   
+
+    // // 确保当前时间的键存在
+    // if (!this.trailsData[currentTime]) {
+    //   this.trailsData[currentTime] = [];
+    // }
+    // if (this.localTrail.hasCurrentTrail) {
+    //   console.log(importUsernameFromLocalStorage());
+
+    //   // this.trailsData[currentTime].push(...this.extractTrailPoints(this.localTrail.currentTrail));
+    // }
+    // this.collabTrails.forEach(trail => {
+    //   if (trail.hasCurrentTrail) {
+    //     // this.trailsData[currentTime].push(...this.extractTrailPoints(trail.currentTrail));
+    //     // console.log(this.app.state.collaborators.entries());
+    //   }
+    // });
+
+    // console.log(this.localTrail);
+    // console.log(this.collabTrails);
+    // console.log(this.localTrail.currentTrail);
   }
 
   private updateCollabTrails() {
@@ -80,7 +146,7 @@ export class LaserTrails implements Trail {
 
     for (const [key, collabolator] of this.app.state.collaborators.entries()) {
       let trail!: AnimatedTrail;
-
+      // console.log(key, collabolator);
       if (!this.collabTrails.has(key)) {
         trail = new AnimatedTrail(this.animationFrameHandler, this.app, {
           ...this.getTrailOptions(),

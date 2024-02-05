@@ -128,7 +128,7 @@ const SingleLibraryItem = ({
         elements: libItem.elements,
         appState: {
           ...appState,
-          viewBackgroundColor: OpenColor.white,
+          viewBackgroundColor: "transparent",
           exportBackground: true,
         },
         files: null,

@@ -484,7 +484,7 @@ describe("tool locking & selection", () => {
       //   const element = UI.createElement(value);
       //   expect(h.state.selectedElementIds[element.id]).not.toBe(true);
       // }
-      if (value !== "eraser") {
+      if (value !== "selection" && value !== "eraser") {
         const element = UI.createElement(value);
         expect(h.state.selectedElementIds[element.id]).not.toBe(true);
       }

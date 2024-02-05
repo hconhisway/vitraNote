@@ -83,12 +83,12 @@ export const setCursorForShape = (
     return;
   }
   if (appState.activeTool.type === "selection") {
-    // resetCursor(interactiveCanvas);
-    const url =
-      appState.theme === THEME.LIGHT
-        ? laserPointerCursorDataURL_lightMode
-        : laserPointerCursorDataURL_darkMode;
-    interactiveCanvas.style.cursor = `url(${url}), auto`;
+    resetCursor(interactiveCanvas);
+    // const url =
+    //   appState.theme === THEME.LIGHT
+    //     ? laserPointerCursorDataURL_lightMode
+    //     : laserPointerCursorDataURL_darkMode;
+    // interactiveCanvas.style.cursor = `url(${url}), auto`;
   } else if (isHandToolActive(appState)) {
     interactiveCanvas.style.cursor = CURSOR_TYPE.GRAB;
   } else if (isEraserActive(appState)) {

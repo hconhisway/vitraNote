@@ -19,7 +19,7 @@ export interface AnimatedTrailOptions {
 }
 
 export class AnimatedTrail implements Trail {
-  private currentTrail?: LaserPointer;
+  currentTrail?: LaserPointer;
   private pastTrails: LaserPointer[] = [];
 
   private container?: SVGSVGElement;

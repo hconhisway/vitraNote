@@ -252,7 +252,7 @@ export const DEFAULT_EXPORT_PADDING = 10; // px
 
 export const DEFAULT_MAX_IMAGE_WIDTH_OR_HEIGHT = 1440;
 
-export const MAX_ALLOWED_FILE_BYTES = 2 * 1024 * 1024;
+export const MAX_ALLOWED_FILE_BYTES = 16 * 1024 * 1024;
 
 export const SVG_NS = "http://www.w3.org/2000/svg";
 
@@ -336,9 +336,9 @@ export const DEFAULT_ELEMENT_PROPS: {
   strokeColor: COLOR_PALETTE.black,
   backgroundColor: COLOR_PALETTE.transparent,
   fillStyle: "solid",
-  strokeWidth: 2,
+  strokeWidth: 1,
   strokeStyle: "solid",
-  roughness: ROUGHNESS.artist,
+  roughness: ROUGHNESS.architect,
   opacity: 100,
   locked: false,
 };
@@ -358,7 +358,7 @@ export const LIBRARY_DISABLED_TYPES = new Set([
 
 // use these constants to easily identify reference sites
 export const TOOL_TYPE = {
-  selection: "laser",
+  selection: "selection",
   rectangle: "rectangle",
   diamond: "diamond",
   ellipse: "ellipse",

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import deleteIcon from '../../excalidraw/assets/delete.svg'
 import { AppClassProperties, AppProps, UIAppState, Zoom } from "../types";
 import io from 'socket.io-client';
+import { actionClearCanvas } from '../actions/index';
+import { useExcalidrawActionManager } from "./App";
+
 interface Image {
   _id: string;
   data: string;
@@ -26,7 +29,7 @@ const SquareGallery = ({
   const squareSize = 100;
   const margin = 10;
   const padding = 10;
-
+  const actionManager = useExcalidrawActionManager();
   const maxSquaresPerRow = 3;
   const containerWidth = maxSquaresPerRow * squareSize + (maxSquaresPerRow - 1) * margin + 2 * padding + 20;
 
@@ -50,9 +53,10 @@ const SquareGallery = ({
       fetchImages();
     };
 
-    const handleCurrentImageUpdated = () => {
-      fetchImages();
-    };
+    // const handleCurrentImageUpdated = () => {
+    //   // actionManager.executeAction(actionClearCanvas);
+    //   // app.setActiveTool({ type: "image" });
+    // };
 
     const handleImageDeleted = () => {
       fetchImages(); // 图片被删除时重新获取图片
@@ -60,11 +64,11 @@ const SquareGallery = ({
 
     socket.on('new_image', handleNewImage);
     socket.on('image_deleted', handleImageDeleted);
-    socket.on('current_image_updated', handleCurrentImageUpdated);
+    // socket.on('current_image_updated', handleCurrentImageUpdated);
     return () => {
       socket.off('new_image', handleNewImage);
       socket.off('image_deleted', handleImageDeleted);
-      socket.off('current_image_updated', handleCurrentImageUpdated);
+      // socket.off('current_image_updated', handleCurrentImageUpdated);
     };
   }, []);
 
@@ -79,7 +83,8 @@ const SquareGallery = ({
   //     console.error('Delete error:', (error instanceof Error) ? error.message : error);
   //   }
   // };
-  const handleDelete = async (imageId: string) => {
+  const handleDelete = async (imageId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
     try {
       // 使用Socket.io发送delete_image事件
       socket.emit('delete_image', imageId);
@@ -96,8 +101,8 @@ const SquareGallery = ({
       const reader = new FileReader();
       reader.onload = (e: ProgressEvent<FileReader>) => {
         if (e.target && typeof e.target.result === 'string') {
-          app.setActiveTool({ type: "image" })
           // 发送图片数据、文件名和类型
+
           socket.emit('upload', e.target.result, file.name, file.type);
         }
       };
@@ -108,10 +113,11 @@ const SquareGallery = ({
 
   const handleSetCurrentImage = async (imageId: string) => {
     setSelectedImageId(imageId);
+    actionManager.executeAction(actionClearCanvas);
     try {
+      
       // 使用 Socket.io 或 fetch 发送当前图片的 ID 到后端
       socket.emit('set_current_image', imageId);
-  
       // 或者使用 fetch 发送 PUT 请求
       // await fetch(`http://localhost:3002/images/setCurrent/${imageId}`, { method: 'PUT' });
   
@@ -158,7 +164,7 @@ const SquareGallery = ({
                 cursor: 'pointer',
                 // 指定的图标样式
               }}
-              onClick={() => handleDelete(image._id)}
+              onClick={(event) => handleDelete(image._id, event)}
             >
               <img src={deleteIcon} alt="Delete" style={{ width: '50px', height: '50px' }} />
             </div>

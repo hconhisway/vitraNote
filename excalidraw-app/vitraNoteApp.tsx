@@ -2,9 +2,11 @@ import polyfill from "../packages/excalidraw/polyfill";
 import LanguageDetector from "i18next-browser-languagedetector";
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "../packages/excalidraw/analytics";
+import { zoomToFitBounds } from "../packages/excalidraw/index";
 import { ErrorDialog } from "../packages/excalidraw/components/ErrorDialog";
 import { TopErrorBoundary } from "./components/TopErrorBoundary";
 // import SquareGallery from "../packages/excalidraw/components/VisGallery";
+import io from "socket.io-client";
 
 import {
   APP_NAME,
@@ -85,6 +87,7 @@ import { ResolutionType } from "../packages/excalidraw/utility-types";
 import { ShareableLinkDialog } from "../packages/excalidraw/components/ShareableLinkDialog";
 import { openConfirmModal } from "../packages/excalidraw/components/OverwriteConfirm/OverwriteConfirmState";
 import Trans from "../packages/excalidraw/components/Trans";
+const socket = io("http://localhost:3002");
 
 polyfill();
 
@@ -146,6 +149,7 @@ const initializeScene = async (opts: {
 
   let roomLinkData = getCollaborationLinkData(window.location.href);
   const isExternalScene = !!(id || jsonBackendMatch || roomLinkData);
+  // console.log(isExternalScene, externalUrlMatch);
   if (isExternalScene) {
     if (
       // don't prompt if scene is empty
@@ -207,13 +211,14 @@ const initializeScene = async (opts: {
       };
     }
   }
-
+  let sceneData: any = { scene: null, isExternalScene: false };
   if (roomLinkData && opts.collabAPI) {
-    const { excalidrawAPI } = opts;
+    // console.log("aaaaaaaa");
 
+    const { excalidrawAPI } = opts;
     const scene = await opts.collabAPI.startCollaboration(roomLinkData);
 
-    return {
+    sceneData = {
       // when collaborating, the state may have already been updated at this
       // point (we may have received updates from other clients), so reconcile
       // elements and appState with existing state
@@ -242,16 +247,40 @@ const initializeScene = async (opts: {
       key: roomLinkData.roomKey,
     };
   } else if (scene) {
-    return isExternalScene && jsonBackendMatch
-      ? {
-          scene,
-          isExternalScene,
-          id: jsonBackendMatch[1],
-          key: jsonBackendMatch[2],
-        }
-      : { scene, isExternalScene: false };
+    // console.log("bbbbbbbbb");
+    if (isExternalScene && jsonBackendMatch) {
+      sceneData = {
+        scene,
+        isExternalScene,
+        id: jsonBackendMatch[1],
+        key: jsonBackendMatch[2],
+      };
+    } else {
+      sceneData = { scene, isExternalScene: false };
+    }
+    // return isExternalScene && jsonBackendMatch
+    //   ? {
+    //       scene,
+    //       isExternalScene,
+    //       id: jsonBackendMatch[1],
+    //       key: jsonBackendMatch[2],
+    //     }
+    //   : { scene, isExternalScene: false };
+  } else {
   }
-  return { scene: null, isExternalScene: false };
+  // const { excalidrawAPI } = opts;
+  // const appState = excalidrawAPI.getAppState();
+  //     excalidrawAPI.updateScene({
+  //       appState: zoomToFitBounds({
+  //             appState,
+  //             bounds: [0, 0, 2574, 1319],
+  //             fitToViewport: true,
+  //             viewportZoomFactor: 1,
+  //           }).appState,
+  //     });
+  return sceneData;
+  // console.log("ccccccccccccc");
+  // return { scene: null, isExternalScene: false };
 };
 
 const detectedLangCode = languageDetector.detect() || defaultLang.code;
@@ -275,12 +304,32 @@ const ExcalidrawWrapper = () => {
       resolvablePromise<ExcalidrawInitialDataState | null>();
   }
 
+  // const targetWidth = 2560; // 目标宽度
+  // const targetHeight = 1305; // 目标高度
+
+  // const scaleContent = () => {
+  //   window.resizeTo(targetWidth, targetHeight);
+  //   // const scaleX = window.innerWidth / targetWidth;
+  //   // const scaleY = window.innerHeight / targetHeight;
+  //   // const scale = Math.min(scaleX, scaleY);
+  //   // const excalidrawContainer = document.querySelector(".excalidraw-app");
+  //   // if (excalidrawContainer && excalidrawContainer instanceof HTMLElement) {
+  //   //   excalidrawContainer.style.transform = `scale(${scale})`;
+  //   //   excalidrawContainer.style.transformOrigin = "top left";
+  //   // }
+  // };
+
   useEffect(() => {
     trackEvent("load", "frame", getFrame());
     // Delayed so that the app has a time to load the latest SW
     setTimeout(() => {
       trackEvent("load", "version", getVersion());
     }, VERSION_TIMEOUT);
+    // scaleContent();
+    // window.addEventListener("resize", scaleContent);
+    // return () => {
+    //   window.removeEventListener("resize", scaleContent);
+    // };
   }, []);
 
   const [excalidrawAPI, excalidrawRefCallback] =
@@ -297,6 +346,46 @@ const ExcalidrawWrapper = () => {
       return;
     }
 
+    const handleResize = () => {
+      const appState = excalidrawAPI.getAppState();
+      excalidrawAPI.updateScene({
+        appState: zoomToFitBounds({
+          appState,
+          bounds: [0, 0, 1600, 900],
+          fitToViewport: true,
+          viewportZoomFactor: 1,
+        }).appState,
+      });
+    };
+
+    // 执行一次初始检查
+    setTimeout(() => {
+      handleResize();
+    }, 5000);
+
+    // 添加窗口大小变化事件监听器
+    window.addEventListener("resize", handleResize);
+    socket.on("current_image_updated", handleResize);
+    // 清理函数
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      socket.off("current_image_updated", handleResize);
+    };
+  }, [excalidrawAPI, isCollabDisabled, collabAPI]);
+
+  useEffect(() => {
+    if (!excalidrawAPI || (!isCollabDisabled && !collabAPI)) {
+      return;
+    }
+    // const appState = excalidrawAPI.getAppState();
+    // excalidrawAPI.updateScene({
+    //   appState: zoomToFitBounds({
+    //         appState,
+    //         bounds: [0, 0, 2574, 1319],
+    //         fitToViewport: true,
+    //         viewportZoomFactor: 1,
+    //       }).appState,
+    // });
     const loadImages = (
       data: ResolutionType<typeof initializeScene>,
       isInitialLoad = false,
@@ -378,6 +467,15 @@ const ExcalidrawWrapper = () => {
         collabAPI.stopCollaboration(false);
       }
       excalidrawAPI.updateScene({ appState: { isLoading: true } });
+      // const appState = excalidrawAPI.getAppState();
+      // excalidrawAPI.updateScene({
+      //   appState: zoomToFitBounds({
+      //         appState,
+      //         bounds: [0, 0, 2574, 1319],
+      //         fitToViewport: true,
+      //         viewportZoomFactor: 1,
+      //       }).appState,
+      // });
 
       initializeScene({ collabAPI, excalidrawAPI }).then((data) => {
         loadImages(data);

@@ -79,7 +79,7 @@
     // border: 20px solid #000000; /* 2px宽，实线，黑色 */
     // following props improve blurriness at certain devicePixelRatios.
     // AFAIK it doesn't affect export (in fact, export seems sharp either way).
-
+    background: transparent;
     image-rendering: pixelated; // chromium
     // NOTE: must be declared *after* the above
     image-rendering: -moz-crisp-edges; // FF
