@@ -87,8 +87,10 @@ import { ResolutionType } from "../packages/excalidraw/utility-types";
 import { ShareableLinkDialog } from "../packages/excalidraw/components/ShareableLinkDialog";
 import { openConfirmModal } from "../packages/excalidraw/components/OverwriteConfirm/OverwriteConfirmState";
 import Trans from "../packages/excalidraw/components/Trans";
-const socket = io("http://localhost:3002");
-
+const socket = io("https://virtranoteapp.sci.utah.edu", { 
+  path: "/api/socket.io",
+ });
+ console.log(socket)
 polyfill();
 
 window.EXCALIDRAW_THROTTLE_RENDER = true;

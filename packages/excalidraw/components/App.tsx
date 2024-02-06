@@ -8525,7 +8525,7 @@ class App extends React.Component<AppProps, AppState> {
   // api.js
   private getCurrentImage = async () => {
 
-      const response = await fetch('http://localhost:3002/images/current');
+      const response = await fetch('https://virtranoteapp.sci.utah.edu/api/images/current');
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }

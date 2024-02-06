@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
-const socket = io('http://localhost:3002');
+const socket = io("https://virtranoteapp.sci.utah.edu", { 
+  path: "/api/socket.io",
+ });
 
 const ImageDisplay = () => {
   const [imageSrc, setImageSrc] = useState('');
 
   const getCurrentImage = async () => {
-    const response = await fetch('http://localhost:3002/images/current');
+    const response = await fetch('https://virtranoteapp.sci.utah.edu/api/images/current');
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
@@ -27,6 +29,7 @@ const ImageDisplay = () => {
         fetchImage();
     };
     fetchImage();
+    console.log(socket)
     socket.on('current_image_updated', handleCurrentImageUpdated);
     return () => {
       socket.off('current_image_updated', handleCurrentImageUpdated);

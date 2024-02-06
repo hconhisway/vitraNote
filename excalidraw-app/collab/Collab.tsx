@@ -83,6 +83,7 @@ import { appJotaiStore } from "../app-jotai";
 import { Mutable, ValueOf } from "../../packages/excalidraw/utility-types";
 import { getVisibleSceneBounds } from "../../packages/excalidraw/element/bounds";
 import { withBatchedUpdates } from "../../packages/excalidraw/reactUtils";
+import io from "socket.io-client";
 
 export const collabAPIAtom = atom<CollabAPI | null>(null);
 export const collabDialogShownAtom = atom(false);
@@ -466,16 +467,20 @@ class Collab extends PureComponent<Props, CollabState> {
       });
     };
     this.fallbackInitializationHandler = fallbackInitializationHandler;
-
+    
     try {
       const socketServerData = await getCollabServer();
-
+      console.log(socketServerData);
+      const socket = io("https://virtranoteapp.sci.utah.edu", { 
+        path: "/api/socket.io",
+      });
       this.portal.socket = this.portal.open(
-        socketIOClient(socketServerData.url, {
-          transports: socketServerData.polling
-            ? ["websocket", "polling"]
-            : ["websocket"],
-        }),
+        // socketIOClient(socketServerData.url, {
+        //   transports: socketServerData.polling
+        //     ? ["websocket", "polling"]
+        //     : ["websocket"],
+        // }),
+        socket,
         roomId,
         roomKey,
       );
@@ -516,12 +521,14 @@ class Collab extends PureComponent<Props, CollabState> {
 
     this.portal.socket.on("client-broadcast", async (jsonData: string) => {
       const data: ValueOf<SocketUpdateDataSource> = JSON.parse(jsonData);
-
+      console.log("aaaaaaaaa");
       switch (data.type) {
         case WS_SUBTYPES.INVALID_RESPONSE:
           break;
         case WS_SUBTYPES.INIT: {
+          console.log("aaaaaaaaa");
           if (!this.portal.socketInitialized) {
+            console.log("bbbbbbbbbbbbb");
             this.initializeRoom({ fetchScene: false });
             const remoteElements = data.payload.elements;
             const reconciledElements = this.reconcileElements(remoteElements);

@@ -19,14 +19,14 @@ Object.defineProperty(window, "crypto", {
     },
   },
 });
-
+// console.log("Aaaaaaaaaaaaa");
 vi.mock("../../excalidraw-app/data/index.ts", async (importActual) => {
   const module = (await importActual()) as any;
   return {
     __esmodule: true,
     ...module,
     getCollabServer: vi.fn(() => ({
-      url: /* doesn't really matter */ "http://localhost:3002",
+      url: /* doesn't really matter */ "http://virtranoteapp.sci.utah.edu/api",
     })),
   };
 });

@@ -20,7 +20,6 @@ import { BroadcastedExcalidrawElement } from "./reconciliation";
 // import { encryptData } from "../../packages/excalidraw/data/encryption";
 import { PRECEDING_ELEMENT_KEY } from "../../packages/excalidraw/constants";
 import type { Socket } from "socket.io-client";
-
 class Portal {
   collab: TCollabClass;
   socket: Socket | null = null;
@@ -37,10 +36,14 @@ class Portal {
     this.socket = socket;
     this.roomId = id;
     this.roomKey = key;
-
+    console.log(this.socket, id, key)
     // Initialize socket listeners
+    // console.log("asldkjasldkj")
     this.socket.on("init-room", () => {
+      console.log("asldkjasldkj")
+
       if (this.socket) {
+        console.log("asldkjasldkj")
         this.socket.emit("join-room", this.roomId);
         trackEvent("share", "room joined");
       }
@@ -106,7 +109,6 @@ class Portal {
   ) {
     if (this.isOpen()) {
       const json = JSON.stringify(data);
-
       // 直接发送JSON字符串，不使用加密
       this.socket?.emit(
         volatile ? WS_EVENTS.SERVER_VOLATILE : WS_EVENTS.SERVER,

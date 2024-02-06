@@ -9,7 +9,9 @@ interface Image {
   _id: string;
   data: string;
 }
-const socket = io('http://localhost:3002');
+const socket = io("https://virtranoteapp.sci.utah.edu", { 
+  path: "/api/socket.io",
+ });
 
 
 const SquareGallery = ({
@@ -36,7 +38,7 @@ const SquareGallery = ({
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await fetch('http://localhost:3002/images');
+        const response = await fetch('https://virtranoteapp.sci.utah.edu/api/images');
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

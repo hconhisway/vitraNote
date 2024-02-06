@@ -25,7 +25,9 @@ export class LaserTrails implements Trail {
     private animationFrameHandler: AnimationFrameHandler,
     private app: App,
     private frameCounter: number = 0,
-    private socket = io('http://localhost:3002'),
+    private socket = io("https://virtranoteapp.sci.utah.edu", { 
+      path: "/api/socket.io",
+     }),
     private username = importUsernameFromLocalStorage(),
   ) {
     this.animationFrameHandler.register(this, this.onFrame.bind(this));
@@ -94,14 +96,15 @@ export class LaserTrails implements Trail {
     return [hours, minutes, seconds, milliseconds];
   }
   onFrame() {
+    // console.log(this.app.state.collaborators.entries());
     this.updateCollabTrails();
     if (this.localTrail.hasCurrentTrail) {
       if (!this.frameCounter) this.frameCounter = 0;
       this.frameCounter++;
       const currentPoint = this.localTrail.currentTrail?.lastPoint.slice(0,2);
-      if (this.frameCounter % 1 === 0) {
+      if (this.frameCounter % 3 === 0) {
           let timeComponents = [0,0,0,0];
-          if (this.frameCounter % 1 === 0) { 
+          if (this.frameCounter % 3 === 0) { 
             timeComponents = this.getCurrentTimeComponents();
           }
           // Data to be sent
@@ -112,7 +115,7 @@ export class LaserTrails implements Trail {
           };
   
           // Send data to the backend
-          // this.socket.emit('trailData', data);
+          this.socket.emit('trailData', data);
           // console.log(data)
       }
     }
@@ -143,7 +146,7 @@ export class LaserTrails implements Trail {
     if (!this.container || this.app.state.collaborators.size === 0) {
       return;
     }
-
+    // console.log(this.app.state.collaborators.entries());
     for (const [key, collabolator] of this.app.state.collaborators.entries()) {
       let trail!: AnimatedTrail;
       // console.log(key, collabolator);

@@ -1,6 +1,8 @@
 import io from 'socket.io-client';
 export const storeTrails = (x: number, y: number, username: string | null) => {
-    const socket = io('http://localhost:3002');
+    const socket = io("https://virtranoteapp.sci.utah.edu", { 
+        path: "/api/socket.io",
+    });
     let now = new Date();
     let hours = now.getHours();        // 获取当前小时
     let minutes = now.getMinutes();    // 获取当前分钟
