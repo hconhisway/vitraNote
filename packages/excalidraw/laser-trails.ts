@@ -115,8 +115,8 @@ export class LaserTrails implements Trail {
           };
   
           // Send data to the backend
-          this.socket.emit('trailData', data);
-          // console.log(data)
+          // this.socket.emit('trailData', data);
+          // console.log(data.currentPoint)
       }
     }
    

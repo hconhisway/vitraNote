@@ -87,10 +87,9 @@ import { ResolutionType } from "../packages/excalidraw/utility-types";
 import { ShareableLinkDialog } from "../packages/excalidraw/components/ShareableLinkDialog";
 import { openConfirmModal } from "../packages/excalidraw/components/OverwriteConfirm/OverwriteConfirmState";
 import Trans from "../packages/excalidraw/components/Trans";
-const socket = io("https://virtranoteapp.sci.utah.edu", { 
+const socket = io("https://virtranoteapp.sci.utah.edu", {
   path: "/api/socket.io",
- });
- console.log(socket)
+});
 polyfill();
 
 window.EXCALIDRAW_THROTTLE_RENDER = true;
@@ -623,7 +622,7 @@ const ExcalidrawWrapper = () => {
     localStorage.setItem(STORAGE_KEYS.LOCAL_STORAGE_THEME, theme);
     // currently only used for body styling during init (see public/index.html),
     // but may change in the future
-    document.documentElement.classList.toggle("dark", theme === THEME.DARK);
+    // document.documentElement.classList.toggle("dark", theme === THEME.DARK);
   }, [theme]);
 
   const onChange = (

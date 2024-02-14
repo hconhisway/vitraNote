@@ -54,7 +54,8 @@ import { LibraryIcon } from "./icons";
 import { UIAppStateContext } from "../context/ui-appState";
 import { DefaultSidebar } from "./DefaultSidebar";
 import { EyeDropper, activeEyeDropperAtom } from "./EyeDropper";
-import SquareGallery from "./VisGallery"
+import SquareGallery from "./VisGallery";
+import AudioRecorder from "./RecordingComponent";
 import "./LayerUI.scss";
 import "./Toolbar.scss";
 import { mutateElement } from "../element/mutateElement";
@@ -242,6 +243,7 @@ const LayerUI = ({
     return (
       <FixedSideContainer side="top">
         <div className="App-menu App-menu_top">
+        
           <Stack.Col gap={6} className={clsx("App-menu_top__left")}>
             {renderCanvasActions()}
             {shouldRenderSelectedShapeActions && renderSelectedShapeActions()}
@@ -356,6 +358,7 @@ const LayerUI = ({
               )}
           </div>
         </div>
+        <AudioRecorder />
         <SquareGallery
           appState={appState}
           activeTool={appState.activeTool}

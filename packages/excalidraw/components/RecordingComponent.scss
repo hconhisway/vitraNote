@@ -1,0 +1,40 @@
+/* 父容器样式，用于左右对齐子元素 */
+.audio-recorder-container {
+    display: flex; /* 启用Flex布局 */
+    justify-content: flex-start; /* 从容器开始处对齐子元素 */
+    align-items: center; /* 确保子元素在垂直方向上居中对齐 */
+  }
+  
+  /* 调整ReactMic的大小和样式 */
+  .custom-mic-size {
+    width: 220px; /* 调整宽度以留出间隙 */
+    height: 50px; /* 自定义高度 */
+    border-radius: 5px; /* 圆角 */
+    margin-bottom: 20px; /* 下边距 */
+    margin-left: 15px;
+    // margin: 4px 20px;
+  }
+  
+  /* 修改按钮的样式 */
+  .custom-button-for-recording {
+    // display: flex; /* 启用flex布局 */
+    // justify-content: center; /* 水平居中 */
+    // align-items: center; /* 垂直居中 */
+    width: 100px; /* 调整宽度以匹配ReactMic的宽度并留出间隙 */
+    height: 50px; /* 设置按钮高度以匹配ReactMic */
+    border-radius: 10px; /* 圆角 */
+    margin-bottom: 20px; /* 下边距 */
+    font-size: 16px; /* 例如，16像素 */
+    font-weight: bold; /* 粗体 */
+    background-color: #f3f0e9;
+    border: 2px solid #FDBB30;
+    color: #A20A35;
+    text-align: left;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-left: 20px;
+    // margin: 4px 10px;
+    cursor: pointer;
+  }
+  

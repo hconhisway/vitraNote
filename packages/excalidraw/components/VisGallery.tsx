@@ -48,17 +48,32 @@ const SquareGallery = ({
         console.error('Fetch error:', (error as Error).message);
       }
     };
-  
+
+    const fetchCurrentImageId = async () => {
+      try {
+        const response = await fetch('https://virtranoteapp.sci.utah.edu/api/images/current');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const currentImage = await response.json();
+        setSelectedImageId(currentImage?._id); // 更新selectedImageId为当前图片的ID
+      } catch (error) {
+        console.error('Fetch current image error:', (error as Error).message);
+      }
+    };
+
+    fetchCurrentImageId();
     fetchImages();
-  
+
     const handleNewImage = () => {
       fetchImages();
     };
 
-    // const handleCurrentImageUpdated = () => {
-    //   // actionManager.executeAction(actionClearCanvas);
-    //   // app.setActiveTool({ type: "image" });
-    // };
+    const handleCurrentImageUpdated = () => {
+      // actionManager.executeAction(actionClearCanvas);
+      // app.setActiveTool({ type: "image" });
+      fetchCurrentImageId();
+    };
 
     const handleImageDeleted = () => {
       fetchImages(); // 图片被删除时重新获取图片
@@ -66,11 +81,11 @@ const SquareGallery = ({
 
     socket.on('new_image', handleNewImage);
     socket.on('image_deleted', handleImageDeleted);
-    // socket.on('current_image_updated', handleCurrentImageUpdated);
+    socket.on('current_image_updated', handleCurrentImageUpdated);
     return () => {
       socket.off('new_image', handleNewImage);
       socket.off('image_deleted', handleImageDeleted);
-      // socket.off('current_image_updated', handleCurrentImageUpdated);
+      socket.off('current_image_updated', handleCurrentImageUpdated);
     };
   }, []);
 

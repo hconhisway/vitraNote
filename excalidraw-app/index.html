@@ -14,19 +14,19 @@
     <!------------------------------------------------------------------------->
     <!--   to minimize white flash on load when user has dark mode enabled   -->
     <script>
-      try {
-        //
-        const theme = window.localStorage.getItem("excalidraw-theme");
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-        }
-      } catch {}
+      // try {
+      //   //
+      //   const theme = window.localStorage.getItem("excalidraw-theme");
+      //   if (theme === "dark") {
+      //     document.documentElement.classList.add("dark");
+      //   }
+      // } catch {}
     </script>
     <style>
-      html.dark {
+      /* html.dark {
         background-color: #121212;
         color: #fff;
-      }
+      } */
     </style>
     <!------------------------------------------------------------------------->
     <% if ("%PROD%" === "true") { %>

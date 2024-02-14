@@ -5,6 +5,9 @@
   --theme-filter: none;
   --button-destructive-bg-color: #{$oc-red-1};
   --button-destructive-color: #{$oc-red-9};
+  // --button-gray-1: #{$oc-gray-2};
+  // --button-gray-2: #{$oc-gray-4};
+  // --button-gray-3: #{$oc-gray-5};
   --button-gray-1: #{$oc-gray-2};
   --button-gray-2: #{$oc-gray-4};
   --button-gray-3: #{$oc-gray-5};
@@ -79,12 +82,12 @@
 
   --color-icon-white: #{$oc-white};
 
-  --color-primary: #6965db;
-  --color-primary-darker: #5b57d1;
-  --color-primary-darkest: #4a47b1;
-  --color-primary-light: #e3e2fe;
-  --color-primary-light-darker: #d7d5ff;
-  --color-primary-hover: #5753d0;
+  --color-primary: #A20A35;
+  --color-primary-darker: #750927;
+  --color-primary-darkest: #650823;
+  --color-primary-light: #fcd173;
+  --color-primary-light-darker: #FDBB30;
+  --color-primary-hover: #A20A35;
 
   --color-gray-10: #f5f5f5;
   --color-gray-20: #ebebeb;
@@ -143,11 +146,11 @@
   --color-on-surface: #1b1b1f;
   --color-brand-hover: #5753d0;
   --color-on-primary-container: #030064;
-  --color-surface-primary-container: #e0dfff;
+  --color-surface-primary-container: #ffeec8;
   --color-brand-active: #4440bf;
   --color-border-outline: #767680;
   --color-border-outline-variant: #c5c5d0;
-  --color-surface-primary-container: #e0dfff;
+  --color-surface-primary-container: #ffeec8;
 
   &.theme--dark {
     &.theme--dark-background-none {
@@ -240,9 +243,9 @@
     --color-surface-low: hsl(240, 8%, 15%);
     --color-surface-mid: hsl(240 6% 10%);
     --color-surface-lowest: hsl(0, 0%, 7%);
-    --color-on-surface: #e3e3e8;
+    --color-on-surface: #ffeec8;
     --color-brand-hover: #bbb8ff;
-    --color-on-primary-container: #e0dfff;
+    --color-on-primary-container: #ffeec8;
     --color-surface-primary-container: #403e6a;
     --color-brand-active: #d0ccff;
     --color-border-outline: #8e8d9c;

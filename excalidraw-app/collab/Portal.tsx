@@ -36,14 +36,9 @@ class Portal {
     this.socket = socket;
     this.roomId = id;
     this.roomKey = key;
-    console.log(this.socket, id, key)
     // Initialize socket listeners
-    // console.log("asldkjasldkj")
     this.socket.on("init-room", () => {
-      console.log("asldkjasldkj")
-
       if (this.socket) {
-        console.log("asldkjasldkj")
         this.socket.emit("join-room", this.roomId);
         trackEvent("share", "room joined");
       }

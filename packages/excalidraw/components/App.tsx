@@ -702,7 +702,7 @@ class App extends React.Component<AppProps, AppState> {
       container: this.excalidrawContainerRef.current,
       id: this.id,
     };
-    console.log(this.excalidrawContainerValue)
+    // console.log(this.excalidrawContainerValue)
     this.fonts = new Fonts({
       scene: this.scene,
       onSceneUpdated: this.onSceneUpdated,

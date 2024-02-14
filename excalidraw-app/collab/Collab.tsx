@@ -36,7 +36,7 @@ import {
 import {
   generateCollaborationLinkData,
   getCollaborationLink,
-  getCollabServer,
+  // getCollabServer,
   getSyncableElements,
   SocketUpdateDataSource,
   SyncableExcalidrawElement,
@@ -454,9 +454,9 @@ class Collab extends PureComponent<Props, CollabState> {
     this.setIsCollaborating(true);
     LocalData.pauseSave("collaboration");
 
-    const { default: socketIOClient } = await import(
-      /* webpackChunkName: "socketIoClient" */ "socket.io-client"
-    );
+    // const { default: socketIOClient } = await import(
+    //   /* webpackChunkName: "socketIoClient" */ "socket.io-client"
+    // );
 
     const fallbackInitializationHandler = () => {
       this.initializeRoom({
@@ -467,11 +467,11 @@ class Collab extends PureComponent<Props, CollabState> {
       });
     };
     this.fallbackInitializationHandler = fallbackInitializationHandler;
-    
+
     try {
-      const socketServerData = await getCollabServer();
-      console.log(socketServerData);
-      const socket = io("https://virtranoteapp.sci.utah.edu", { 
+      // const socketServerData = await getCollabServer();
+      // console.log(socketServerData);
+      const socket = io("https://virtranoteapp.sci.utah.edu", {
         path: "/api/socket.io",
       });
       this.portal.socket = this.portal.open(
@@ -521,14 +521,11 @@ class Collab extends PureComponent<Props, CollabState> {
 
     this.portal.socket.on("client-broadcast", async (jsonData: string) => {
       const data: ValueOf<SocketUpdateDataSource> = JSON.parse(jsonData);
-      console.log("aaaaaaaaa");
       switch (data.type) {
         case WS_SUBTYPES.INVALID_RESPONSE:
           break;
         case WS_SUBTYPES.INIT: {
-          console.log("aaaaaaaaa");
           if (!this.portal.socketInitialized) {
-            console.log("bbbbbbbbbbbbb");
             this.initializeRoom({ fetchScene: false });
             const remoteElements = data.payload.elements;
             const reconciledElements = this.reconcileElements(remoteElements);
