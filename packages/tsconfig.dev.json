@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "experimentalDecorators": true,
+    "useDefineForClassFields": true,
     "target": "es6",
     "module": "esNext",
     "moduleResolution": "node",

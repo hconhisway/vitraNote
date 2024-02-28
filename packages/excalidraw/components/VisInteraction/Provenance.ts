@@ -62,7 +62,7 @@ export function setupProvenance(): AppProvenance {
   const selectNode = (node:string) => {
     // console.log(node);
     store.selectNode(node);
-    console.log(store);
+    // console.log(store);
   }
 
   const setNodePositions = (pos:NodeMap, skipProvenance: boolean = false) => {

@@ -16,6 +16,7 @@ type Props = OwnProps;
 
 const Visualization: FC<Props> = ({store}: Props) => {
   const {isNodePositionSet} = store!;
+  console.log(store);
   const graphString = JSON.stringify(data);
 
   const [dimension, setDimensions] = useState({height: 0, width: 0});

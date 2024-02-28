@@ -24,12 +24,12 @@ interface ExportedInteractiveVisProps {
 export const ExportedInteractiveVis: React.FC<ExportedInteractiveVisProps> = ({ stateOfTools }) => {
   return (
       <FullScreenContainer
-      style={{
-        position: 'absolute', // 使用绝对定位
-        width: '100%', // 占满整个宽度
-        height: '100%', // 占满整个高度
-        zIndex: stateOfTools === "selection" ? 3 : 1,
-      }}>
+        style={{
+          position: 'absolute', // 使用绝对定位
+          width: '100%', // 占满整个宽度
+          height: '100%', // 占满整个高度
+          zIndex: stateOfTools === "selection" ? 3 : 1,
+        }}>
           <Provider store={store}>
               <InteractiveVisApp />
           </Provider>

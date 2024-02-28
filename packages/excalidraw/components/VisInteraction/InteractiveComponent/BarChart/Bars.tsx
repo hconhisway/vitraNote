@@ -1,6 +1,8 @@
-import React, {FC, useEffect, useMemo} from 'react';
+import React, {FC, useEffect, useMemo, useRef, useState} from 'react';
 import Store from '../../InteractiveInterfaces/Store';
 import {inject, observer} from 'mobx-react';
+import { Tooltip as ReactTooltip } from 'react-tooltip'
+import 'react-tooltip/dist/react-tooltip.css'
 import {
   scaleLinear,
   scaleBand,
@@ -15,6 +17,13 @@ import styled from 'styled-components';
 import {actions} from '../../exportInteractive';
 import {Popup, Header} from 'semantic-ui-react';
 
+const Background = styled.rect`
+  fill: #ffffff; // 你可以选择任何背景颜色
+  opacity: 0.8; // 可选，根据你的设计需求调整透明度
+  rx: 5;
+  ry: 5;
+  filter: url(#dropshadow);
+`;
 interface OwnProps {
   store?: Store;
   height: number;
@@ -66,7 +75,8 @@ const Bars: FC<Props> = ({store, width, height, data}: Props) => {
       })
       .attr('dy', '-1em')
       .style('dominant-baseline', 'middle');
-  }, [xScale, yScale]);
+
+  }, [xScale, yScale, selectedNode]);
 
   return (
     <>
@@ -75,31 +85,62 @@ const Bars: FC<Props> = ({store, width, height, data}: Props) => {
         <g className="y-axis"></g>
       </g>
       <g className="bars">
-      {data.map(({character, count}) => (
-        <rect
-          key={character}
-          className={convertIDtoClassForm(character)}
-          x={xScale(character)}
-          y={yScale(count)}
-          width={xScale.bandwidth()}
-          height={height - yScale(count)}
-          fill={selectedNode === character ? 'red' : 'steelblue'}
-          onClick={() => actions.selectNode(character)}
-          onMouseOver={(e) => {
-            e.currentTarget.style.fill = 'blueviolet';
-            // 如果你想增加边框宽度或改变边框颜色来突出显示，可以在这里添加
-            e.currentTarget.setAttribute('stroke', 'yellow');
-            e.currentTarget.setAttribute('stroke-width', '0');
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.fill = selectedNode === character ? 'red' : 'steelblue';
-            // 恢复边框的默认样式
-            e.currentTarget.setAttribute('stroke', 'none'); // 假设默认情况下没有边框
-            e.currentTarget.setAttribute('stroke-width', '0');
-          }}
-          style={{ cursor: 'pointer' }} // 设置鼠标样式为指针，提升用户体验
-        />
-      ))}
+        {data.map(({ character, count }) => {
+          const isSelected = selectedNode === character;
+          const textOffset = 10; // 文本向右偏移量
+          const textRef = useRef<SVGTextElement | null>(null);
+          const [backgroundSize, setBackgroundSize] = useState({ width: 0, height: 0, x: 0, y: 0 });
+
+          const textX = xScale(character)! + xScale.bandwidth() / 2 + textOffset;
+          const textY = yScale(count) - 50;
+
+          useEffect(() => {
+            
+            if (isSelected && textRef.current) {
+              const bbox = textRef.current.getBBox();
+              setBackgroundSize({
+                width: bbox.width + 10, // 加上一些额外的宽度作为边距
+                height: bbox.height + 4, // 加上一些额外的高度作为边距
+                x: bbox.x - 5, // 将背景稍微向左移动，增加边距
+                y: bbox.y - 2, // 将背景稍微向上移动，增加边距
+              });
+            }
+            console.log(textRef.current)
+          }, [isSelected, character]);
+          
+          return (
+            
+            <g key={character} onClick={() => actions.selectNode(character)} >
+              <Bar
+                isselected={String(isSelected)}
+                className={convertIDtoClassForm(character)}
+                x={xScale(character)}
+                y={yScale(count)}
+                width={xScale.bandwidth()}
+                height={height - yScale(count)}
+              ></Bar>
+               {isSelected && (
+                <>
+                <Background
+                  x={backgroundSize.x}
+                  y={backgroundSize.y}
+                  width={backgroundSize.width}
+                  height={backgroundSize.height}
+                />
+                <text
+                  ref={textRef}
+                  x={xScale(character)! + xScale.bandwidth() / 2}
+                  y={yScale(count) - 5}
+                  textAnchor="middle"
+                  style={{fontSize:'20px', fontWeight: 'bold'}}
+                >
+                  {character}
+                </text>
+                </>
+              )}
+            </g>
+          );
+        })}
       </g>
     </>
   );
@@ -107,13 +148,13 @@ const Bars: FC<Props> = ({store, width, height, data}: Props) => {
 
 export default inject('store')(observer(Bars));
 
-// interface BarProps {
-//   isSelected: boolean;
-// }
+interface BarProps {
+  isselected: string;
+}
 
-// const Bar = styled('rect')<BarProps>`
-//   fill: ${props => (props.isSelected ? 'red' : 'steelblue')};
-//   &:hover {
-//     fill: ${props => (props.isSelected ? 'red' : 'blueviolet')};
-//   }
-// `;
+const Bar = styled('rect')<BarProps>`
+  fill: ${props => (JSON.parse(props.isselected) ? 'red' : 'steelblue')};
+  &:hover {
+    fill: ${props => (JSON.parse(props.isselected) ? 'red' : 'blueviolet')};
+  }
+`;

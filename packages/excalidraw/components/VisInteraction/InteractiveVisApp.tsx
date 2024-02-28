@@ -4,9 +4,9 @@ import {observer, inject} from 'mobx-react';
 import Store from './InteractiveInterfaces/Store';
 import ClipboardJS from 'clipboard';
 import styled from 'styled-components';
-import {
-  Header,
-} from 'semantic-ui-react';
+// import {
+//   Header,
+// } from 'semantic-ui-react';
 
 interface OwnProps {
   store?: Store;
@@ -15,14 +15,15 @@ interface OwnProps {
 type Props = OwnProps;
 
 const InteractiveVisApp: FC<Props> = ({store}: Props) => {
-  const {selectedNode} = store!;
-  new ClipboardJS('.copy-clipboard');
+  // const {selectedNode} = store!;
+  // console.log(store);
+  // new ClipboardJS('.copy-clipboard');
 
   return (
     <VisualizationWrapper>
-      <Header textAlign="center">Selected Node: {selectedNode}</Header>
-    <Visualization />
-  </VisualizationWrapper>
+      {/* <Header textAlign="center">Selected Node: {selectedNode}</Header> */}
+      <Visualization />
+    </VisualizationWrapper>
   );
 };
 

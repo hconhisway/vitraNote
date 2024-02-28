@@ -2,6 +2,7 @@
   "exclude": ["**/*.test.*", "tests", "types", "example", "dist"],
   "compilerOptions": {
     "experimentalDecorators": true,
+    "useDefineForClassFields": true,
     "target": "ESNext",
     "strict": true,
     "outDir": "dist",
