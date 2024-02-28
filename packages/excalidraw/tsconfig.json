@@ -1,6 +1,7 @@
 {
   "exclude": ["**/*.test.*", "tests", "types", "example", "dist"],
   "compilerOptions": {
+    "experimentalDecorators": true,
     "target": "ESNext",
     "strict": true,
     "outDir": "dist",

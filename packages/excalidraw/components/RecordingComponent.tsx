@@ -69,8 +69,34 @@ const AudioRecorder: React.FC = () => {
     socket.emit("receive_recording_info", recordingInfo);
   };
 
-  const saveRecording = (recordedBlob: { blob: Blob }): void => {
-    saveAs(recordedBlob.blob, 'recording.wav'); // 保存录音为.wav文件
+
+
+  // const saveRecording = (recordedBlob: { blob: Blob }): void => {
+  //   saveAs(recordedBlob.blob, 'recording.wav'); // 保存录音为.wav文件
+  // };
+  const saveRecording = async (recordedBlob: { blob: Blob }): Promise<void> => {
+    const formData = new FormData();
+    formData.append("audio", recordedBlob.blob, `${username}_recording_${new Date().toISOString()}.mp4`);
+  
+    try {
+      const response = await fetch("https://virtranoteapp.sci.utah.edu/api/uploadAudio", {
+        method: "POST",
+        body: formData,
+        headers: {
+          // 添加自定义头部
+          ...username ? { "X-Username": username } : {"X-Username": "Anonymous"}
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      const result = await response.json();
+      console.log(result.message); // 假设后端返回了一个消息
+    } catch (error) {
+      console.error('Error uploading the audio file:', error);
+    }
   };
 
   return (
@@ -81,7 +107,7 @@ const AudioRecorder: React.FC = () => {
         visualSetting = "frequencyBars"
         onStop={onStop}
         onData={onData}
-        mimeType="audio/wav"
+        mimeType="audio/mp4"
         strokeColor="#FDBB30"
         backgroundColor="#a20a357e" />
       <button className="custom-button-for-recording" onClick={isRecording ? stopRecording : startRecording}>

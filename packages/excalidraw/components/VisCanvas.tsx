@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
+import { isMagicFrameElement } from '../element/typeChecks';
 const socket = io("https://virtranoteapp.sci.utah.edu", { 
   path: "/api/socket.io",
  });
@@ -37,16 +38,16 @@ const ImageDisplay = () => {
       let adjustedTop: Number;
       let adjustedWidth: Number;
       let adjustedHeight: Number;
-      if (viewportHeight < viewportWidth * 0.5625) {
-        const scaleRatio = 900 / viewportHeight;
-        const widthOfOneSide = (viewportWidth - viewportHeight / 0.5625) / 2;
+      if (viewportHeight < viewportWidth * 0.75) {
+        const scaleRatio = 1200 / viewportHeight;
+        const widthOfOneSide = (viewportWidth - viewportHeight / 0.75) / 2;
         adjustedLeft =  (offsetLeft - widthOfOneSide) * scaleRatio;
         adjustedTop = offsetTop * scaleRatio;
         adjustedHeight = clientHeight * scaleRatio;
         adjustedWidth = clientWidth * scaleRatio;
       } else {
         const scaleRatio = 1600 / viewportWidth;
-        const heightOfOneSide = (viewportHeight - viewportWidth / 0.5625) / 2;
+        const heightOfOneSide = (viewportHeight - viewportWidth / 0.75) / 2;
         adjustedLeft =  offsetLeft * scaleRatio;
         adjustedTop = (offsetTop - heightOfOneSide) * scaleRatio;
         adjustedHeight = clientHeight * scaleRatio;
@@ -54,16 +55,17 @@ const ImageDisplay = () => {
       }
       // 获取图片的四个角的像素坐标和像素宽高
       const imageSizeInfo = [adjustedLeft, adjustedTop, adjustedWidth, adjustedHeight];
+      console.log(imageSizeInfo);
       const currentTime = getCurrentTimeComponents();
       const imageInfo = {
         imageId: imageId,
         sizeInfo: imageSizeInfo,
         currentTime: currentTime,
-        fileName: "guanqunTest"
+        fileName: "Temp"
       };
   
       // 发送数据给后端
-      // socket.emit('record_image_switch', imageInfo);
+      socket.emit('record_image_switch', imageInfo);
     }
   };
 

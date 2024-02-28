@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { flushSync } from "react-dom";
 import SquareGallery from "./VisGallery";
 import ImageDisplay from "./VisCanvas";
+import { ExportedInteractiveVis } from "./VisInteraction/exportInteractive";
 import { RoughCanvas } from "roughjs/bin/canvas";
 import rough from "roughjs/bin/rough";
 import clsx from "clsx";
@@ -408,7 +409,7 @@ import FollowMode from "./FollowMode/FollowMode";
 import { AnimationFrameHandler } from "../animation-frame-handler";
 import { AnimatedTrail } from "../animated-trail";
 import { LaserTrails } from "../laser-trails";
-import { storeTrails } from "../trail-storage";
+import { storeTrails, storeTrailsLaser } from "../trail-storage";
 import { importUsernameFromLocalStorage } from "../../../excalidraw-app/data/localStorage";
 import { withBatchedUpdates, withBatchedUpdatesThrottled } from "../reactUtils";
 import { getRenderOpacity } from "../renderer/renderElement";
@@ -1643,7 +1644,8 @@ class App extends React.Component<AppProps, AppState> {
                             }}
                           />
                         )}
-                        <ImageDisplay/>
+                        {/* <ImageDisplay/> */}
+                        <ExportedInteractiveVis stateOfTools= {this.state.activeTool.type}  ></ExportedInteractiveVis>
                         <StaticCanvas
                           canvas={this.canvas}
                           rc={this.rc}
@@ -7650,7 +7652,13 @@ class App extends React.Component<AppProps, AppState> {
         pointerDownState,
         childEvent,
       );
-
+      if (this.state.activeTool.type === "freedraw") {
+        storeTrails(0.222222, 0.222222, importUsernameFromLocalStorage());
+      } else if (this.state.activeTool.type === "eraser") {
+        storeTrails(0.333333, 0.333333, importUsernameFromLocalStorage());
+      } else if (this.state.activeTool.type === "laser") {
+        storeTrailsLaser(0.222222, 0.222222, importUsernameFromLocalStorage());
+      }
       if (draggingElement?.type === "freedraw") {
         const pointerCoords = viewportCoordsToSceneCoords(
           childEvent,

@@ -352,7 +352,7 @@ const ExcalidrawWrapper = () => {
       excalidrawAPI.updateScene({
         appState: zoomToFitBounds({
           appState,
-          bounds: [0, 0, 1600, 900],
+          bounds: [0, 0, 1600, 1200],
           fitToViewport: true,
           viewportZoomFactor: 1,
         }).appState,
