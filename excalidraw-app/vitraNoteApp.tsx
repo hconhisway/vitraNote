@@ -6,7 +6,6 @@ import { zoomToFitBounds } from "../packages/excalidraw/index";
 import { ErrorDialog } from "../packages/excalidraw/components/ErrorDialog";
 import { TopErrorBoundary } from "./components/TopErrorBoundary";
 // import SquareGallery from "../packages/excalidraw/components/VisGallery";
-import io from "socket.io-client";
 
 import {
   APP_NAME,
@@ -87,9 +86,7 @@ import { ResolutionType } from "../packages/excalidraw/utility-types";
 import { ShareableLinkDialog } from "../packages/excalidraw/components/ShareableLinkDialog";
 import { openConfirmModal } from "../packages/excalidraw/components/OverwriteConfirm/OverwriteConfirmState";
 import Trans from "../packages/excalidraw/components/Trans";
-const socket = io("https://virtranoteapp.sci.utah.edu", {
-  path: "/api/socket.io",
-});
+import socket from "../packages/excalidraw/sockioExport";
 polyfill();
 
 window.EXCALIDRAW_THROTTLE_RENDER = true;
@@ -352,7 +349,7 @@ const ExcalidrawWrapper = () => {
       excalidrawAPI.updateScene({
         appState: zoomToFitBounds({
           appState,
-          bounds: [0, 0, 1600, 1200],
+          bounds: [0, 0, 1600, 900],
           fitToViewport: true,
           viewportZoomFactor: 1,
         }).appState,

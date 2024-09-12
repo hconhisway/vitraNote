@@ -1,7 +1,7 @@
 import {observable, computed, action, makeObservable} from 'mobx';
 import {NodeMap, ApplicationState, defaultState} from './ApplicationState';
 import {Provenance, initProvenance} from '@visdesignlab/trrack';
-
+import socket from '../../../sockioExport';
 export default class Store {
   provenance: Provenance<ApplicationState, unknown, unknown>;
   isAtRoot: boolean = true;
@@ -35,12 +35,15 @@ export default class Store {
     return this.nodePositions.nodes.length > 0 && this.nodePositions.links.length > 0;
   }
 
-  selectNode(node:string) {
+  selectNode(node:string, skipProvenance: boolean = false) {
+    if (skipProvenance) {
+      this.selectedNode = this.selectedNode === node? 'none' : node;
+    }
     let a = this.provenance.addAction(`Selecting ${node}`, (state: ApplicationState) => {
       state.selectedNode = state.selectedNode === node ? 'none' : node;
       return state;
     });
-
+    
     a.applyAction();
   }
 

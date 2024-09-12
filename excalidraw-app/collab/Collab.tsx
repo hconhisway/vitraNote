@@ -84,7 +84,7 @@ import { Mutable, ValueOf } from "../../packages/excalidraw/utility-types";
 import { getVisibleSceneBounds } from "../../packages/excalidraw/element/bounds";
 import { withBatchedUpdates } from "../../packages/excalidraw/reactUtils";
 import io from "socket.io-client";
-
+// import socket from "../../packages/excalidraw/sockioExport";
 export const collabAPIAtom = atom<CollabAPI | null>(null);
 export const collabDialogShownAtom = atom(false);
 export const isCollaboratingAtom = atom(false);

@@ -6,6 +6,7 @@ import {inject, observer} from 'mobx-react';
 import {select, scaleOrdinal, schemeCategory10, drag, selectAll} from 'd3';
 import styled from 'styled-components';
 import {Popup, Header} from 'semantic-ui-react';
+import NodeComponent from './NodeComponent';
 
 const Background = styled.rect`
   fill: #ffffff; // 你可以选择任何背景颜色
@@ -55,7 +56,8 @@ const NodeLinkDetails: FC<Props> = ({store, height, width}: Props) => {
   }
 
   const colorScale = scaleOrdinal(schemeCategory10);
-
+  const textRef = useRef<SVGTextElement | null>(null);
+  const [backgroundSize, setBackgroundSize] = useState({ width: 0, height: 0, x: 0, y: 0 });
   useEffect(() => {
     nodes.forEach((node: any) => {
       const nodeId = convertIDtoClassForm(node.id);
@@ -114,82 +116,31 @@ const NodeLinkDetails: FC<Props> = ({store, height, width}: Props) => {
         ))}
       </g>
       <g className="nodes">
-        {nodes.map((node: any) => { 
-          const isSelected = selectedNode === node.id;
-          const textOffset = 10; // 文本向右偏移量
-          // const textRef = useRef<SVGTextElement | null>(null);
-          // const [backgroundSize, setBackgroundSize] = useState({ width: 0, height: 0, x: 0, y: 0 });
-          
-          // useEffect(() => {
-            
-          //   if (isSelected && textRef.current) {
-          //     const bbox = textRef.current.getBBox();
-          //     setBackgroundSize({
-          //       width: bbox.width + 10, // 加上一些额外的宽度作为边距
-          //       height: bbox.height + 4, // 加上一些额外的高度作为边距
-          //       x: bbox.x - 5, // 将背景稍微向左移动，增加边距
-          //       y: bbox.y - 2, // 将背景稍微向上移动，增加边距
-          //     });
-          //   }
-          //   console.log(textRef.current)
-          // }, [isSelected, node.id]);
-          
-          return(
-            <>
-              <circle
-                key={node.id} // 使用node.id作为key
-                className={`node ${convertIDtoClassForm(node.id)}`}
-                cx={node.x}
-                cy={node.y}
-                r={node.id === selectedNode ? 12 : 8}
-                fill={colorScale(node.group)}
-                stroke={neighbourNodeIds.includes(node.id) ? '#000' : '#fff'}
-                strokeWidth={neighbourNodeIds.includes(node.id) ? '2px' : '1.5px'}
-                onMouseOver={() => {
-                  select(`.${convertIDtoClassForm(node.id)}`).attr('r', 12);
-                }}
-                onMouseLeave={() => {
-                  if (node.id !== selectedNode)
-                    select(`.${convertIDtoClassForm(node.id)}`).attr('r', 8);
-                }}
-                style={{ cursor: 'pointer' }}
-            />
-            {/* {isSelected && (
-                <>
-                <Background
-                  x={backgroundSize.x}
-                  y={backgroundSize.y}
-                  width={backgroundSize.width}
-                  height={backgroundSize.height}
-                />
-                <text
-                  ref={textRef}
-                  x={node.x}
-                  y={node.y}
-                  textAnchor="middle"
-                  style={{fontSize:'20px', fontWeight: 'bold'}}
-                >
-                  {node.id}
-                </text>
-                </>
-              )} */}
-          </>
-        )})}
-      </g>
+      {nodes.map((node: any) => (
+        <NodeComponent
+          key={node.id}
+          node={node}
+          isSelected={selectedNode === node.id}
+          // actions={actions}
+          colorScale={colorScale}
+          neighbourNodeIds={neighbourNodeIds}
+        />
+      ))}
+    </g>
     </>
   );
 };
 
 export default inject('store')(observer(NodeLinkDetails));
 
-// interface NodeProps {
-//   isneighbour: boolean;
-// }
+interface NodeProps {
+  isneighbour: boolean;
+}
 
-// const Node = styled.circle<NodeProps>`
-//   stroke-width: ${props => (props.isneighbour ? '2px' : '1.5px')};
-//   stroke: ${props => (props.isneighbour ? '#000' : ' #fff')};
-// `;
+const Node = styled.circle<NodeProps>`
+  stroke-width: ${props => (props.isneighbour ? '2px' : '1.5px')};
+  stroke: ${props => (props.isneighbour ? '#000' : ' #fff')};
+`;
 
 const Link = styled.line`
   stroke-width: 2px;

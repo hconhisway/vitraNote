@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import deleteIcon from '../../excalidraw/assets/delete.svg'
 import { AppClassProperties, AppProps, UIAppState, Zoom } from "../types";
-import io from 'socket.io-client';
 import { actionClearCanvas } from '../actions/index';
 import { useExcalidrawActionManager } from "./App";
 
@@ -9,9 +8,7 @@ interface Image {
   _id: string;
   data: string;
 }
-const socket = io("https://virtranoteapp.sci.utah.edu", { 
-  path: "/api/socket.io",
- });
+import socket from '../sockioExport';
 
 
 const SquareGallery = ({
@@ -221,14 +218,15 @@ const SquareGallery = ({
               <div
                 style={{
                   position: 'absolute',
-                  top: -20,
-                  right: -20,
+                  display: 'flex',
+                  top: -15,
+                  right: -15,
                   cursor: 'pointer',
                   // 指定的图标样式
                 }}
                 onClick={(event) => handleDelete(image._id, event)}
               >
-                <img src={deleteIcon} alt="Delete" style={{ width: '50px', height: '50px' }} />
+                <img src={deleteIcon} alt="Delete" style={{ width: '27px', height: '27px' }} />
               </div>
             )}
           </div>

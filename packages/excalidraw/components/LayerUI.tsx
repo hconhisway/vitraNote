@@ -62,6 +62,7 @@ import { mutateElement } from "../element/mutateElement";
 import { ShapeCache } from "../scene/ShapeCache";
 import Scene from "../scene/Scene";
 import { LaserPointerButton } from "./LaserPointerButton";
+import { InteractiveVisVisibilityButton } from "./InteractiveVisVisibilityButton"
 import { MagicSettings } from "./MagicSettings";
 import { TTDDialog } from "./TTDDialog/TTDDialog";
 
@@ -356,6 +357,10 @@ const LayerUI = ({
                 appState.openSidebar?.name !== DEFAULT_SIDEBAR.name) && (
                 <tunnels.DefaultSidebarTriggerTunnel.Out />
               )}
+            <InteractiveVisVisibilityButton 
+                checked={appState.InteractiveVisVisibility}
+                onChange={app.setInteractiveVisVisibility}
+              />
           </div>
         </div>
         <AudioRecorder />

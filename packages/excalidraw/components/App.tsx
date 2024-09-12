@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext} from "react";
 import { flushSync } from "react-dom";
 import SquareGallery from "./VisGallery";
 import ImageDisplay from "./VisCanvas";
@@ -7,6 +7,7 @@ import { RoughCanvas } from "roughjs/bin/canvas";
 import rough from "roughjs/bin/rough";
 import clsx from "clsx";
 import { nanoid } from "nanoid";
+import io from 'socket.io-client';
 import {
   actionAddToLibrary,
   actionBringForward,
@@ -515,8 +516,8 @@ class App extends React.Component<AppProps, AppState> {
   rc: RoughCanvas;
   unmounted: boolean = false;
   actionManager: ActionManager;
+  socket:any;
   device: Device = deviceContextInitialValue;
-
   private excalidrawContainerRef = React.createRef<HTMLDivElement>();
 
   public scene: Scene;
@@ -647,7 +648,6 @@ class App extends React.Component<AppProps, AppState> {
     // this.state = {
     //   ...updatedFigState
     // }
-
     this.id = nanoid();
     this.library = new Library(this);
     this.actionManager = new ActionManager(
@@ -682,6 +682,7 @@ class App extends React.Component<AppProps, AppState> {
         setToast: this.setToast,
         id: this.id,
         setActiveTool: this.setActiveTool,
+        // setInteractiveVisVisibility: this.setInteractiveVisVisibility,
         setCursor: this.setCursor,
         resetCursor: this.resetCursor,
         updateFrameRendering: this.updateFrameRendering,
@@ -1644,8 +1645,11 @@ class App extends React.Component<AppProps, AppState> {
                             }}
                           />
                         )}
-                        {/* <ImageDisplay/> */}
-                        <ExportedInteractiveVis stateOfTools= {this.state.activeTool.type}  ></ExportedInteractiveVis>
+                        <ImageDisplay appState={this.state}/>
+                        <ExportedInteractiveVis
+                          // key={this.state.InteractiveVisVisibility ? 'visible' : 'hidden'}
+                          stateOfTools= {this.state.activeTool.type}
+                          appState={this.state} />
                         <StaticCanvas
                           canvas={this.canvas}
                           rc={this.rc}
@@ -2385,6 +2389,7 @@ class App extends React.Component<AppProps, AppState> {
   };
 
   public async componentDidMount() {
+    // this.socket.on('visibilityChanged', this.handleVisibilityChange);
     this.unmounted = false;
     this.excalidrawContainerValue.container =
       this.excalidrawContainerRef.current;
@@ -2458,6 +2463,7 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   public componentWillUnmount() {
+    // this.socket.off('visibilityChanged', this.handleVisibilityChange);
     this.renderer.destroy();
     this.scene = new Scene();
     this.renderer = new Renderer(this.scene);
@@ -4104,6 +4110,21 @@ class App extends React.Component<AppProps, AppState> {
         ...commonResets,
       };
     });
+  };
+
+  setInteractiveVisVisibility = (InteractiveVisVisibility: boolean) => {
+    this.setState((prevState) => {
+      // this.socket.emit("chanegInterativeVisibility", InteractiveVisVisibility);
+      return {
+        ...prevState,
+        InteractiveVisVisibility: InteractiveVisVisibility
+      };
+    });
+  }
+
+  handleVisibilityChange = (isVisible: boolean) => {
+    // 调用父组件传入的方法，将isVisible传递给app.setInteractiveVisVisibility
+    this.setInteractiveVisVisibility(isVisible);
   };
 
   setOpenDialog = (dialogType: AppState["openDialog"]) => {

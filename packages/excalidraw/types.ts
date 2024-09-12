@@ -237,6 +237,7 @@ export interface AppState {
   currentItemRoughness: number;
   currentItemOpacity: number;
   currentItemFontFamily: FontFamilyValues;
+  InteractiveVisVisibility: boolean;
   currentItemFontSize: number;
   currentItemTextAlign: TextAlign;
   currentItemStartArrowhead: Arrowhead | null;
@@ -571,6 +572,7 @@ export type AppClassProperties = {
   addElementsFromPasteOrLibrary: App["addElementsFromPasteOrLibrary"];
   togglePenMode: App["togglePenMode"];
   setActiveTool: App["setActiveTool"];
+  setInteractiveVisVisibility: App["setInteractiveVisVisibility"];
   setOpenDialog: App["setOpenDialog"];
   insertEmbeddableElement: App["insertEmbeddableElement"];
   onMagicframeToolSelect: App["onMagicframeToolSelect"];

@@ -1,8 +1,6 @@
 import io from 'socket.io-client';
+import socket from './sockioExport';
 export const storeTrails = (x: number, y: number, username: string | null) => {
-    const socket = io("https://virtranoteapp.sci.utah.edu", { 
-        path: "/api/socket.io",
-    });
     let now = new Date();
     let hours = now.getHours();        // 获取当前小时
     let minutes = now.getMinutes();    // 获取当前分钟
@@ -22,9 +20,6 @@ export const storeTrails = (x: number, y: number, username: string | null) => {
 };
 
 export const storeTrailsLaser = (x: number, y: number, username: string | null) => {
-    const socket = io("https://virtranoteapp.sci.utah.edu", { 
-        path: "/api/socket.io",
-    });
     let now = new Date();
     let hours = now.getHours();        // 获取当前小时
     let minutes = now.getMinutes();    // 获取当前分钟

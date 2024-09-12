@@ -3,10 +3,7 @@ import React, { useState } from 'react';
 import "./RecordingComponent.scss"
 import { ReactMic } from 'react-mic';
 import { saveAs } from 'file-saver'; // 用于保存文件到本地
-import io from 'socket.io-client';
-const socket = io("https://virtranoteapp.sci.utah.edu", { 
-  path: "/api/socket.io",
- });
+import socket from '../sockioExport';
  import {
   importUsernameFromLocalStorage
 } from "../../../excalidraw-app/data/localStorage";
@@ -107,7 +104,7 @@ const AudioRecorder: React.FC = () => {
         visualSetting = "frequencyBars"
         onStop={onStop}
         onData={onData}
-        mimeType="audio/mp4"
+        mimeType="audio/mp3"
         strokeColor="#FDBB30"
         backgroundColor="#a20a357e" />
       <button className="custom-button-for-recording" onClick={isRecording ? stopRecording : startRecording}>

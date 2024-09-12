@@ -57,7 +57,8 @@ const Bars: FC<Props> = ({store, width, height, data}: Props) => {
 
     return [xScale, yScale];
   }, [height, width, data]);
-
+  const textRef = useRef<SVGTextElement | null>(null);
+  const [backgroundSize, setBackgroundSize] = useState({ width: 0, height: 0, x: 0, y: 0 });
   useEffect(() => {
     const xAxis = axisBottom(xScale);
     const yAxis = axisLeft(yScale);
@@ -88,9 +89,6 @@ const Bars: FC<Props> = ({store, width, height, data}: Props) => {
         {data.map(({ character, count }) => {
           const isSelected = selectedNode === character;
           const textOffset = 10; // 文本向右偏移量
-          const textRef = useRef<SVGTextElement | null>(null);
-          const [backgroundSize, setBackgroundSize] = useState({ width: 0, height: 0, x: 0, y: 0 });
-
           const textX = xScale(character)! + xScale.bandwidth() / 2 + textOffset;
           const textY = yScale(count) - 50;
 
@@ -105,7 +103,7 @@ const Bars: FC<Props> = ({store, width, height, data}: Props) => {
                 y: bbox.y - 2, // 将背景稍微向上移动，增加边距
               });
             }
-            console.log(textRef.current)
+            // console.log(textRef.current)
           }, [isSelected, character]);
           
           return (

@@ -8,8 +8,8 @@ import { getClientColor } from "./clients";
 import {
   importUsernameFromLocalStorage
 } from "../../excalidraw-app/data/localStorage";
+import socket from "./sockioExport";
 
-import io from 'socket.io-client';
 interface TrailPoint {
   x: number;
   y: number;
@@ -25,16 +25,13 @@ export class LaserTrails implements Trail {
     private animationFrameHandler: AnimationFrameHandler,
     private app: App,
     private frameCounter: number = 0,
-    private socket = io("https://virtranoteapp.sci.utah.edu", { 
-      path: "/api/socket.io",
-     }),
     private username = importUsernameFromLocalStorage(),
   ) {
     this.animationFrameHandler.register(this, this.onFrame.bind(this));
 
     this.localTrail = new AnimatedTrail(animationFrameHandler, app, {
       ...this.getTrailOptions(),
-      fill: () => "red",
+      fill: () => "blue",
     });
   }
 
@@ -115,7 +112,7 @@ export class LaserTrails implements Trail {
           };
   
           // Send data to the backend
-          this.socket.emit('trailData', data);
+          socket.emit('trailData', data);
           // console.log(data.currentPoint)
       }
     }
@@ -154,6 +151,7 @@ export class LaserTrails implements Trail {
         trail = new AnimatedTrail(this.animationFrameHandler, this.app, {
           ...this.getTrailOptions(),
           fill: () => getClientColor(key),
+            // fill: () => "yellow",
         });
         trail.start(this.container);
 

@@ -43,6 +43,7 @@ export const getDefaultAppState = (): Omit<
     editingElement: null,
     editingGroupId: null,
     editingLinearElement: null,
+    InteractiveVisVisibility: false,
     activeTool: {
       type: "laser",
       customType: null,
@@ -131,6 +132,7 @@ const APP_STATE_STORAGE_CONF = (<
   collaborators: { browser: false, export: false, server: false },
   currentChartType: { browser: true, export: false, server: false },
   currentItemBackgroundColor: { browser: true, export: false, server: false },
+  InteractiveVisVisibility: {browser: true, export: false, server: false},
   currentItemEndArrowhead: { browser: true, export: false, server: false },
   currentItemFillStyle: { browser: true, export: false, server: false },
   currentItemFontFamily: { browser: true, export: false, server: false },

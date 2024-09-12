@@ -747,11 +747,12 @@ const _renderInteractiveScene = ({
       isOutOfBounds ||
       userState === UserIdleState.IDLE ||
       userState === UserIdleState.AWAY;
-
+    
     if (isInactive) {
       context.globalAlpha = 0.3;
     }
-
+    // add to remove remote pointer
+    // context.globalAlpha = 0;
     if (
       renderConfig.remotePointerButton &&
       renderConfig.remotePointerButton[clientId] === "down"
@@ -772,41 +773,41 @@ const _renderInteractiveScene = ({
     }
 
     // Background (white outline) for arrow
-    context.fillStyle = oc.white;
-    context.strokeStyle = oc.white;
-    context.lineWidth = 6;
-    context.lineJoin = "round";
-    context.beginPath();
-    context.moveTo(x, y);
-    context.lineTo(x + 0, y + 14);
-    context.lineTo(x + 4, y + 9);
-    context.lineTo(x + 11, y + 8);
-    context.closePath();
-    context.stroke();
-    context.fill();
+    // context.fillStyle = oc.white;
+    // context.strokeStyle = oc.white;
+    // context.lineWidth = 6;
+    // context.lineJoin = "round";
+    // context.beginPath();
+    // context.moveTo(x, y);
+    // context.lineTo(x + 0, y + 14);
+    // context.lineTo(x + 4, y + 9);
+    // context.lineTo(x + 11, y + 8);
+    // context.closePath();
+    // context.stroke();
+    // context.fill();
 
     // Arrow
-    context.fillStyle = background;
-    context.strokeStyle = background;
-    context.lineWidth = 2;
-    context.lineJoin = "round";
-    context.beginPath();
-    if (isInactive) {
-      context.moveTo(x - 1, y - 1);
-      context.lineTo(x - 1, y + 15);
-      context.lineTo(x + 5, y + 10);
-      context.lineTo(x + 12, y + 9);
-      context.closePath();
-      context.fill();
-    } else {
-      context.moveTo(x, y);
-      context.lineTo(x + 0, y + 14);
-      context.lineTo(x + 4, y + 9);
-      context.lineTo(x + 11, y + 8);
-      context.closePath();
-      context.fill();
-      context.stroke();
-    }
+    // context.fillStyle = background;
+    // context.strokeStyle = background;
+    // context.lineWidth = 2;
+    // context.lineJoin = "round";
+    // context.beginPath();
+    // if (isInactive) {
+    //   context.moveTo(x - 1, y - 1);
+    //   context.lineTo(x - 1, y + 15);
+    //   context.lineTo(x + 5, y + 10);
+    //   context.lineTo(x + 12, y + 9);
+    //   context.closePath();
+    //   context.fill();
+    // } else {
+    //   context.moveTo(x, y);
+    //   context.lineTo(x + 0, y + 14);
+    //   context.lineTo(x + 4, y + 9);
+    //   context.lineTo(x + 11, y + 8);
+    //   context.closePath();
+    //   context.fill();
+    //   context.stroke();
+    // }
 
     const username = renderConfig.remotePointerUsernames[clientId] || "";
 
